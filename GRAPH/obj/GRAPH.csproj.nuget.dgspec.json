@@ -1,23 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\WORK\\Projects\\acc-sss-management\\GRAPH\\GRAPH.csproj": {}
+    "C:\\EDEL\\Projects\\acc-sss-management\\GRAPH\\GRAPH.csproj": {}
   },
   "projects": {
-    "D:\\WORK\\Projects\\acc-sss-management\\GRAPH\\GRAPH.csproj": {
+    "C:\\EDEL\\Projects\\acc-sss-management\\GRAPH\\GRAPH.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\WORK\\Projects\\acc-sss-management\\GRAPH\\GRAPH.csproj",
+        "projectUniqueName": "C:\\EDEL\\Projects\\acc-sss-management\\GRAPH\\GRAPH.csproj",
         "projectName": "GRAPH",
-        "projectPath": "D:\\WORK\\Projects\\acc-sss-management\\GRAPH\\GRAPH.csproj",
-        "packagesPath": "C:\\Users\\ECQ\\.nuget\\packages\\",
-        "outputPath": "D:\\WORK\\Projects\\acc-sss-management\\GRAPH\\obj\\",
+        "projectPath": "C:\\EDEL\\Projects\\acc-sss-management\\GRAPH\\GRAPH.csproj",
+        "packagesPath": "C:\\Users\\edel_\\.nuget\\packages\\",
+        "outputPath": "C:\\EDEL\\Projects\\acc-sss-management\\GRAPH\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\ECQ\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\edel_\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

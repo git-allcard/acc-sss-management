@@ -120,9 +120,9 @@ Partial Class _frmMonitoring
         '
         'Button1
         '
-        Me.Button1.Location = New System.Drawing.Point(2, 1)
+        Me.Button1.Location = New System.Drawing.Point(6, 6)
         Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(143, 39)
+        Me.Button1.Size = New System.Drawing.Size(97, 31)
         Me.Button1.TabIndex = 51
         Me.Button1.Text = "Scan"
         Me.Button1.UseVisualStyleBackColor = True
@@ -135,7 +135,6 @@ Partial Class _frmMonitoring
         '
         Me.lvPC.Border.Class = "ListViewBorder"
         Me.lvPC.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square
-        'Me.lvPC.DisabledBackColor = System.Drawing.Color.Empty
         Me.lvPC.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lvPC.ForeColor = System.Drawing.Color.Red
         Me.lvPC.FullRowSelect = True
@@ -156,7 +155,7 @@ Partial Class _frmMonitoring
         Me.Label7.ForeColor = System.Drawing.Color.Green
         Me.Label7.Location = New System.Drawing.Point(207, 1)
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(138, 46)
+        Me.Label7.Size = New System.Drawing.Size(111, 37)
         Me.Label7.TabIndex = 50
         Me.Label7.Text = "ONLINE"
         '
@@ -168,7 +167,7 @@ Partial Class _frmMonitoring
         Me.Label10.ForeColor = System.Drawing.Color.Red
         Me.Label10.Location = New System.Drawing.Point(742, 3)
         Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(147, 46)
+        Me.Label10.Size = New System.Drawing.Size(117, 37)
         Me.Label10.TabIndex = 49
         Me.Label10.Text = "OFFLINE"
         '
@@ -180,7 +179,6 @@ Partial Class _frmMonitoring
         '
         Me.lvList.Border.Class = "ListViewBorder"
         Me.lvList.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square
-        'Me.lvList.DisabledBackColor = System.Drawing.Color.Empty
         Me.lvList.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lvList.ForeColor = System.Drawing.Color.Green
         Me.lvList.FullRowSelect = True
@@ -231,7 +229,7 @@ Partial Class _frmMonitoring
         Me.Label17.AutoSize = True
         Me.Label17.Location = New System.Drawing.Point(104, 25)
         Me.Label17.Name = "Label17"
-        Me.Label17.Size = New System.Drawing.Size(43, 20)
+        Me.Label17.Size = New System.Drawing.Size(35, 15)
         Me.Label17.TabIndex = 52
         Me.Label17.Text = "From"
         '
@@ -240,7 +238,7 @@ Partial Class _frmMonitoring
         Me.Label16.AutoSize = True
         Me.Label16.Location = New System.Drawing.Point(353, 25)
         Me.Label16.Name = "Label16"
-        Me.Label16.Size = New System.Drawing.Size(23, 20)
+        Me.Label16.Size = New System.Drawing.Size(18, 15)
         Me.Label16.TabIndex = 51
         Me.Label16.Text = "to"
         '
@@ -249,7 +247,7 @@ Partial Class _frmMonitoring
         Me.dtpTo.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.dtpTo.Location = New System.Drawing.Point(379, 19)
         Me.dtpTo.Name = "dtpTo"
-        Me.dtpTo.Size = New System.Drawing.Size(200, 27)
+        Me.dtpTo.Size = New System.Drawing.Size(200, 23)
         Me.dtpTo.TabIndex = 50
         Me.dtpTo.Visible = False
         '
@@ -258,7 +256,7 @@ Partial Class _frmMonitoring
         Me.dtpFrom.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.dtpFrom.Location = New System.Drawing.Point(147, 19)
         Me.dtpFrom.Name = "dtpFrom"
-        Me.dtpFrom.Size = New System.Drawing.Size(200, 27)
+        Me.dtpFrom.Size = New System.Drawing.Size(200, 23)
         Me.dtpFrom.TabIndex = 49
         Me.dtpFrom.Visible = False
         '
@@ -268,7 +266,7 @@ Partial Class _frmMonitoring
         Me.lblFilter.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblFilter.Location = New System.Drawing.Point(9, 23)
         Me.lblFilter.Name = "lblFilter"
-        Me.lblFilter.Size = New System.Drawing.Size(118, 23)
+        Me.lblFilter.Size = New System.Drawing.Size(91, 17)
         Me.lblFilter.TabIndex = 48
         Me.lblFilter.Text = "Filter by date :"
         Me.lblFilter.Visible = False
@@ -321,7 +319,7 @@ Partial Class _frmMonitoring
         Me.Label15.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label15.Location = New System.Drawing.Point(712, 121)
         Me.Label15.Name = "Label15"
-        Me.Label15.Size = New System.Drawing.Size(26, 19)
+        Me.Label15.Size = New System.Drawing.Size(21, 13)
         Me.Label15.TabIndex = 75
         Me.Label15.Text = "TO"
         '
@@ -331,7 +329,7 @@ Partial Class _frmMonitoring
         Me.Label14.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label14.Location = New System.Drawing.Point(614, 121)
         Me.Label14.Name = "Label14"
-        Me.Label14.Size = New System.Drawing.Size(48, 19)
+        Me.Label14.Size = New System.Drawing.Size(39, 13)
         Me.Label14.TabIndex = 74
         Me.Label14.Text = "FROM"
         '
@@ -341,7 +339,7 @@ Partial Class _frmMonitoring
         Me.Label13.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label13.Location = New System.Drawing.Point(693, 133)
         Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(17, 23)
+        Me.Label13.Size = New System.Drawing.Size(13, 17)
         Me.Label13.TabIndex = 73
         Me.Label13.Text = "-"
         '
@@ -351,7 +349,7 @@ Partial Class _frmMonitoring
         Me.OpEnd1.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.OpEnd1.Location = New System.Drawing.Point(712, 133)
         Me.OpEnd1.Name = "OpEnd1"
-        Me.OpEnd1.Size = New System.Drawing.Size(93, 23)
+        Me.OpEnd1.Size = New System.Drawing.Size(72, 17)
         Me.OpEnd1.TabIndex = 72
         Me.OpEnd1.Text = "6:00:00 PM"
         '
@@ -361,7 +359,7 @@ Partial Class _frmMonitoring
         Me.OpStart1.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.OpStart1.Location = New System.Drawing.Point(614, 133)
         Me.OpStart1.Name = "OpStart1"
-        Me.OpStart1.Size = New System.Drawing.Size(94, 23)
+        Me.OpStart1.Size = New System.Drawing.Size(73, 17)
         Me.OpStart1.TabIndex = 71
         Me.OpStart1.Text = "9:00:00 AM"
         '
@@ -372,7 +370,7 @@ Partial Class _frmMonitoring
         Me.Label12.ForeColor = System.Drawing.Color.Blue
         Me.Label12.Location = New System.Drawing.Point(612, 100)
         Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(188, 28)
+        Me.Label12.Size = New System.Drawing.Size(151, 21)
         Me.Label12.TabIndex = 70
         Me.Label12.Text = "OPERATION HOURS"
         '
@@ -382,7 +380,7 @@ Partial Class _frmMonitoring
         Me.lblSerial.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblSerial.Location = New System.Drawing.Point(260, 50)
         Me.lblSerial.Name = "lblSerial"
-        Me.lblSerial.Size = New System.Drawing.Size(96, 20)
+        Me.lblSerial.Size = New System.Drawing.Size(76, 15)
         Me.lblSerial.TabIndex = 69
         Me.lblSerial.Text = "KIOSK NAME"
         '
@@ -393,7 +391,7 @@ Partial Class _frmMonitoring
         Me.Label11.ForeColor = System.Drawing.Color.Blue
         Me.Label11.Location = New System.Drawing.Point(259, 29)
         Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(89, 28)
+        Me.Label11.Size = New System.Drawing.Size(72, 21)
         Me.Label11.TabIndex = 68
         Me.Label11.Text = "SERIAL #"
         '
@@ -403,7 +401,7 @@ Partial Class _frmMonitoring
         Me.lbldate.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lbldate.Location = New System.Drawing.Point(869, 50)
         Me.lbldate.Name = "lbldate"
-        Me.lbldate.Size = New System.Drawing.Size(96, 20)
+        Me.lbldate.Size = New System.Drawing.Size(76, 15)
         Me.lbldate.TabIndex = 67
         Me.lbldate.Text = "KIOSK NAME"
         '
@@ -414,7 +412,7 @@ Partial Class _frmMonitoring
         Me.Label9.ForeColor = System.Drawing.Color.Blue
         Me.Label9.Location = New System.Drawing.Point(867, 29)
         Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(126, 28)
+        Me.Label9.Size = New System.Drawing.Size(100, 21)
         Me.Label9.TabIndex = 66
         Me.Label9.Text = "Date Created"
         '
@@ -425,7 +423,7 @@ Partial Class _frmMonitoring
         Me.lblOD.ForeColor = System.Drawing.Color.Black
         Me.lblOD.Location = New System.Drawing.Point(321, 121)
         Me.lblOD.Name = "lblOD"
-        Me.lblOD.Size = New System.Drawing.Size(110, 23)
+        Me.lblOD.Size = New System.Drawing.Size(85, 17)
         Me.lblOD.TabIndex = 65
         Me.lblOD.Text = "KIOSK NAME"
         '
@@ -436,7 +434,7 @@ Partial Class _frmMonitoring
         Me.DURATION.ForeColor = System.Drawing.Color.MediumBlue
         Me.DURATION.Location = New System.Drawing.Point(318, 99)
         Me.DURATION.Name = "DURATION"
-        Me.DURATION.Size = New System.Drawing.Size(188, 28)
+        Me.DURATION.Size = New System.Drawing.Size(151, 21)
         Me.DURATION.TabIndex = 64
         Me.DURATION.Text = "OFFLINE DURATION"
         '
@@ -457,7 +455,7 @@ Partial Class _frmMonitoring
         Me.lblTrans.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTrans.Location = New System.Drawing.Point(870, 122)
         Me.lblTrans.Name = "lblTrans"
-        Me.lblTrans.Size = New System.Drawing.Size(110, 23)
+        Me.lblTrans.Size = New System.Drawing.Size(85, 17)
         Me.lblTrans.TabIndex = 58
         Me.lblTrans.Text = "KIOSK NAME"
         '
@@ -468,7 +466,7 @@ Partial Class _frmMonitoring
         Me.Label8.ForeColor = System.Drawing.Color.Blue
         Me.Label8.Location = New System.Drawing.Point(867, 100)
         Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(154, 28)
+        Me.Label8.Size = New System.Drawing.Size(124, 21)
         Me.Label8.TabIndex = 57
         Me.Label8.Text = "TRANSACTIONS"
         '
@@ -479,7 +477,7 @@ Partial Class _frmMonitoring
         Me.Label6.ForeColor = System.Drawing.Color.Blue
         Me.Label6.Location = New System.Drawing.Point(2, 98)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(79, 28)
+        Me.Label6.Size = New System.Drawing.Size(63, 21)
         Me.Label6.TabIndex = 46
         Me.Label6.Text = "STATUS"
         '
@@ -490,7 +488,7 @@ Partial Class _frmMonitoring
         Me.LASTONLINE.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
         Me.LASTONLINE.Location = New System.Drawing.Point(114, 122)
         Me.LASTONLINE.Name = "LASTONLINE"
-        Me.LASTONLINE.Size = New System.Drawing.Size(110, 23)
+        Me.LASTONLINE.Size = New System.Drawing.Size(85, 17)
         Me.LASTONLINE.TabIndex = 56
         Me.LASTONLINE.Text = "KIOSK NAME"
         '
@@ -500,7 +498,7 @@ Partial Class _frmMonitoring
         Me.lblGroup.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblGroup.Location = New System.Drawing.Point(760, 50)
         Me.lblGroup.Name = "lblGroup"
-        Me.lblGroup.Size = New System.Drawing.Size(96, 20)
+        Me.lblGroup.Size = New System.Drawing.Size(76, 15)
         Me.lblGroup.TabIndex = 51
         Me.lblGroup.Text = "KIOSK NAME"
         '
@@ -510,7 +508,7 @@ Partial Class _frmMonitoring
         Me.lblStatus.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblStatus.Location = New System.Drawing.Point(2, 120)
         Me.lblStatus.Name = "lblStatus"
-        Me.lblStatus.Size = New System.Drawing.Size(96, 20)
+        Me.lblStatus.Size = New System.Drawing.Size(76, 15)
         Me.lblStatus.TabIndex = 52
         Me.lblStatus.Text = "KIOSK NAME"
         '
@@ -520,7 +518,7 @@ Partial Class _frmMonitoring
         Me.lblCluster.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblCluster.Location = New System.Drawing.Point(613, 50)
         Me.lblCluster.Name = "lblCluster"
-        Me.lblCluster.Size = New System.Drawing.Size(96, 20)
+        Me.lblCluster.Size = New System.Drawing.Size(76, 15)
         Me.lblCluster.TabIndex = 50
         Me.lblCluster.Text = "KIOSK NAME"
         '
@@ -531,7 +529,7 @@ Partial Class _frmMonitoring
         Me.lblLastOnline.ForeColor = System.Drawing.Color.Blue
         Me.lblLastOnline.Location = New System.Drawing.Point(112, 99)
         Me.lblLastOnline.Name = "lblLastOnline"
-        Me.lblLastOnline.Size = New System.Drawing.Size(130, 28)
+        Me.lblLastOnline.Size = New System.Drawing.Size(105, 21)
         Me.lblLastOnline.TabIndex = 53
         Me.lblLastOnline.Text = "LAST ONLINE"
         '
@@ -541,7 +539,7 @@ Partial Class _frmMonitoring
         Me.lblKbranch.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblKbranch.Location = New System.Drawing.Point(398, 50)
         Me.lblKbranch.Name = "lblKbranch"
-        Me.lblKbranch.Size = New System.Drawing.Size(96, 20)
+        Me.lblKbranch.Size = New System.Drawing.Size(76, 15)
         Me.lblKbranch.TabIndex = 49
         Me.lblKbranch.Text = "KIOSK NAME"
         '
@@ -552,7 +550,7 @@ Partial Class _frmMonitoring
         Me.lblOffline.ForeColor = System.Drawing.Color.Blue
         Me.lblOffline.Location = New System.Drawing.Point(113, 99)
         Me.lblOffline.Name = "lblOffline"
-        Me.lblOffline.Size = New System.Drawing.Size(135, 28)
+        Me.lblOffline.Size = New System.Drawing.Size(109, 21)
         Me.lblOffline.TabIndex = 55
         Me.lblOffline.Text = "LAST OFFLINE"
         '
@@ -562,7 +560,7 @@ Partial Class _frmMonitoring
         Me.lblKIP.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblKIP.Location = New System.Drawing.Point(115, 50)
         Me.lblKIP.Name = "lblKIP"
-        Me.lblKIP.Size = New System.Drawing.Size(96, 20)
+        Me.lblKIP.Size = New System.Drawing.Size(76, 15)
         Me.lblKIP.TabIndex = 48
         Me.lblKIP.Text = "KIOSK NAME"
         '
@@ -573,7 +571,7 @@ Partial Class _frmMonitoring
         Me.LASTOFFLINE.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
         Me.LASTOFFLINE.Location = New System.Drawing.Point(114, 122)
         Me.LASTOFFLINE.Name = "LASTOFFLINE"
-        Me.LASTOFFLINE.Size = New System.Drawing.Size(110, 23)
+        Me.LASTOFFLINE.Size = New System.Drawing.Size(85, 17)
         Me.LASTOFFLINE.TabIndex = 54
         Me.LASTOFFLINE.Text = "KIOSK NAME"
         '
@@ -583,7 +581,7 @@ Partial Class _frmMonitoring
         Me.lblKname.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblKname.Location = New System.Drawing.Point(4, 50)
         Me.lblKname.Name = "lblKname"
-        Me.lblKname.Size = New System.Drawing.Size(96, 20)
+        Me.lblKname.Size = New System.Drawing.Size(76, 15)
         Me.lblKname.TabIndex = 47
         Me.lblKname.Text = "KIOSK NAME"
         '
@@ -594,7 +592,7 @@ Partial Class _frmMonitoring
         Me.Label5.ForeColor = System.Drawing.Color.Blue
         Me.Label5.Location = New System.Drawing.Point(611, 29)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(94, 28)
+        Me.Label5.Size = New System.Drawing.Size(76, 21)
         Me.Label5.TabIndex = 45
         Me.Label5.Text = "DIVISION"
         '
@@ -605,7 +603,7 @@ Partial Class _frmMonitoring
         Me.Label4.ForeColor = System.Drawing.Color.Blue
         Me.Label4.Location = New System.Drawing.Point(758, 29)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(78, 28)
+        Me.Label4.Size = New System.Drawing.Size(63, 21)
         Me.Label4.TabIndex = 44
         Me.Label4.Text = "GROUP"
         '
@@ -616,7 +614,7 @@ Partial Class _frmMonitoring
         Me.Label3.ForeColor = System.Drawing.Color.Blue
         Me.Label3.Location = New System.Drawing.Point(115, 29)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(118, 28)
+        Me.Label3.Size = New System.Drawing.Size(95, 21)
         Me.Label3.TabIndex = 43
         Me.Label3.Text = "IP ADDRESS"
         '
@@ -627,7 +625,7 @@ Partial Class _frmMonitoring
         Me.Label1.ForeColor = System.Drawing.Color.Blue
         Me.Label1.Location = New System.Drawing.Point(3, 29)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(123, 28)
+        Me.Label1.Size = New System.Drawing.Size(98, 21)
         Me.Label1.TabIndex = 4
         Me.Label1.Text = "HOST NAME"
         '
@@ -638,13 +636,13 @@ Partial Class _frmMonitoring
         Me.Label2.ForeColor = System.Drawing.Color.Blue
         Me.Label2.Location = New System.Drawing.Point(397, 29)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(89, 28)
+        Me.Label2.Size = New System.Drawing.Size(72, 21)
         Me.Label2.TabIndex = 42
         Me.Label2.Text = "BRANCH"
         '
         '_frmMonitoring
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 19.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1074, 721)
         Me.Controls.Add(Me.Panel1)

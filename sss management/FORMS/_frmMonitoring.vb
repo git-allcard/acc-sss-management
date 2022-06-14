@@ -2,7 +2,10 @@ Imports System.Threading
 Imports CrystalDecisions.CrystalReports.Engine
 Imports CrystalDecisions.Shared
 Imports CrystalDecisions.Windows.Forms
+Imports System.Linq
 Public Class _frmMonitoring
+
+
     Dim cnt As Integer
     Dim statusChange As Integer
     Dim db As New ConnectionString
@@ -33,18 +36,18 @@ Public Class _frmMonitoring
 
             DURATION.Text = "OFFLINE DURATION"
 
-            Dim date1 As DateTime = _
+            Dim date1 As DateTime =
         System.Convert.ToDateTime(LASTOFFLINE.Text)
 
-            Dim date2 As DateTime = _
+            Dim date2 As DateTime =
              System.Convert.ToDateTime(DateAndTime.Now)
 
             Dim ts As New TimeSpan()
 
             ts = date2.Subtract(date1)
 
-            lblOD.Text = ts.Days & " Day(s) " & _
-              ts.Hours & " Hr(s) " & ts.Minutes & " Min(s) " & ts.Seconds & _
+            lblOD.Text = ts.Days & " Day(s) " &
+              ts.Hours & " Hr(s) " & ts.Minutes & " Min(s) " & ts.Seconds &
             " Sec(s) Ago"
             LASTOFFLINE.ForeColor = Color.Black
             LASTOFFLINE.Visible = True
@@ -54,7 +57,8 @@ Public Class _frmMonitoring
             db.FillDataGridView("select unpvt.value, case when unpvt.attribute = 'OFFLINE_DT' then '*** OFFLINE ***' else 'ONLINE' end as [STATUS] FROM SSMONITORING c UNPIVOT ( value for attribute in (ONLINE_DT,OFFLINE_DT) )unpvt INNER JOIN SSINFOTERMKIOSK ON SSINFOTERMKIOSK.BRANCH_IP = unpvt.BRANCH_IP where cast(unpvt.[value] as date) BETWEEN '" & dtpFrom.Value & "' and '" & dtpTo.Value & "' and SSINFOTERMKIOSK.BRANCH_IP = '" & ipadd & "' UNION SELECT GETDATE() AS VALUE, 'ONLINE' AS STATUS  FROM SSINFOTERMKIOSK INNER JOIN SSMONITORING ON SSMONITORING.BRANCH_IP = SSINFOTERMKIOSK.BRANCH_IP WHERE SSINFOTERMKIOSK.BRANCH_IP NOT IN(SELECT SSMONITORING.BRANCH_IP FROM SSMONITORING where cast(DATESTAMP as date) = '" & Today & "') and SSINFOTERMKIOSK.BRANCH_IP = '" & ipadd & "' ORDER BY unpvt.value", dgvLogs)
 
         Catch ex As Exception
-            MsgBox(ex.ToString)
+            'MsgBox(ex.ToString)
+            Utilities.ShowErrorMessageBox(ex.Message)
         End Try
     End Sub
     Public Sub loadDetailslvList()
@@ -101,7 +105,8 @@ Public Class _frmMonitoring
             End If
 
         Catch ex As Exception
-            MsgBox(ex.ToString)
+            'MsgBox(ex.ToString)
+            Utilities.ShowErrorMessageBox(ex.Message)
         End Try
     End Sub
     Private Sub lvList_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvList.Click
@@ -134,7 +139,8 @@ Public Class _frmMonitoring
                     LASTONLINE.Visible = True
             End Select
         Catch ex As Exception
-            MsgBox(ex.ToString)
+            'MsgBox(ex.ToString)
+            Utilities.ShowErrorMessageBox(ex.Message)
         End Try
     End Sub
     Private Sub lvPC_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvPC.Click
@@ -167,10 +173,12 @@ Public Class _frmMonitoring
                     LASTONLINE.Visible = True
             End Select
         Catch ex As Exception
-            MsgBox(ex.ToString)
+            'MsgBox(ex.ToString)
+            Utilities.ShowErrorMessageBox(ex.Message)
         End Try
     End Sub
 #End Region
+
 #Region "Thread Event"
     Private Sub _frmMonitoring_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
@@ -178,12 +186,20 @@ Public Class _frmMonitoring
             'dtpTo.Value = Today
             GC.Collect()
             Control.CheckForIllegalCrossThreadCalls = False
+
+            Cursor = Cursors.WaitCursor
+            Me.Enabled = False
+
             trd = New Thread(AddressOf ThreadTask)
             trd.IsBackground = True
             trd.Start()
 
+            Me.Enabled = True
+            Cursor = Cursors.Default
+
         Catch ex As Exception
-            MsgBox(ex.ToString)
+            'MsgBox(ex.ToString)
+            Utilities.ShowErrorMessageBox(ex.Message)
         End Try
     End Sub
     Private Sub ThreadTask()
@@ -192,29 +208,77 @@ Public Class _frmMonitoring
                 runTime()
                 System.Threading.Thread.Sleep(1000 * 300)
             Catch ex As Exception
-                MsgBox(ex.ToString)
+                'MsgBox(ex.ToString)
+                Utilities.ShowErrorMessageBox(ex.Message)
             End Try
         Loop
     End Sub
     Public Sub runTime()
-        Button1.Enabled = False
-        lvPC.Enabled = False
-        lvList.Enabled = False
-        loadBranches()
-        lvPC.Enabled = True
-        lvList.Enabled = True
-        Button1.Enabled = True
+        'Button1.Enabled = False
+        'lvPC.Enabled = False
+        'lvList.Enabled = False
+        'loadBranchesv2()
+        'lvPC.Enabled = True
+        'lvList.Enabled = True
+        'Button1.Enabled = True
+
+        loadBranchesv2()
     End Sub
 #End Region
-    Public Sub loadBranches()
-        Try
-            db.FillListView(db.ExecuteSQLQuery("SELECT DISTINCT SSINFOTERMKIOSK.KIOSK_ID,SSINFOTERMKIOSK.BRANCH_IP,SSINFOTERMBR.BRANCH_NM, TAG = 'ONLINE' FROM SSINFOTERMKIOSK INNER JOIN SSINFOTERMBR ON SSINFOTERMKIOSK.BRANCH_CD=SSINFOTERMBR.BRANCH_CD WHERE (SSINFOTERMKIOSK.BRANCH_IP NOT IN(SELECT BRANCH_IP FROM SSMONITORING) OR BRANCH_IP NOT IN(SELECT DISTINCT BRANCH_IP FROM SSMONITORING WHERE STATUS=1 AND CAST(DATESTAMP AS DATE) = '" & Today & "')) and isvpn = 0 ORDER BY SSINFOTERMBR.BRANCH_NM"), lvList)
-            db.FillListView(db.ExecuteSQLQuery("SELECT DISTINCT SSINFOTERMKIOSK.KIOSK_ID,SSINFOTERMKIOSK.BRANCH_IP,SSINFOTERMBR.BRANCH_NM, SSMONITORING.OFFLINE_DT, TAG = 'OFFLINE' FROM SSINFOTERMKIOSK INNER JOIN SSINFOTERMBR ON SSINFOTERMKIOSK.BRANCH_CD=SSINFOTERMBR.BRANCH_CD INNER JOIN SSMONITORING ON SSINFOTERMKIOSK.BRANCH_IP=SSMONITORING.BRANCH_IP WHERE SSMONITORING.STATUS = 1 AND CAST(DATESTAMP AS DATE) = '" & Today & "' ORDER BY SSINFOTERMBR.BRANCH_NM"), lvPC)
+    'Public Sub loadBranches()
+    '    Try
+    '        db.FillListView(db.ExecuteSQLQuery("SELECT DISTINCT SSINFOTERMKIOSK.KIOSK_ID,SSINFOTERMKIOSK.BRANCH_IP,SSINFOTERMBR.BRANCH_NM, TAG = 'ONLINE' FROM SSINFOTERMKIOSK INNER JOIN SSINFOTERMBR ON SSINFOTERMKIOSK.BRANCH_CD=SSINFOTERMBR.BRANCH_CD WHERE (SSINFOTERMKIOSK.BRANCH_IP NOT IN(SELECT BRANCH_IP FROM SSMONITORING) OR BRANCH_IP NOT IN(SELECT DISTINCT BRANCH_IP FROM SSMONITORING WHERE STATUS=1 AND CAST(DATESTAMP AS DATE) = '" & Today & "')) and isvpn = 0 ORDER BY SSINFOTERMBR.BRANCH_NM"), lvList)
+    '        db.FillListView(db.ExecuteSQLQuery("SELECT DISTINCT SSINFOTERMKIOSK.KIOSK_ID,SSINFOTERMKIOSK.BRANCH_IP,SSINFOTERMBR.BRANCH_NM, SSMONITORING.OFFLINE_DT, TAG = 'OFFLINE' FROM SSINFOTERMKIOSK INNER JOIN SSINFOTERMBR ON SSINFOTERMKIOSK.BRANCH_CD=SSINFOTERMBR.BRANCH_CD INNER JOIN SSMONITORING ON SSINFOTERMKIOSK.BRANCH_IP=SSMONITORING.BRANCH_IP WHERE SSMONITORING.STATUS = 1 AND CAST(DATESTAMP AS DATE) = '" & Today & "' ORDER BY SSINFOTERMBR.BRANCH_NM"), lvPC)
 
+    '    Catch ex As Exception
+    '        MsgBox(ex.ToString)
+    '    End Try
+    'End Sub
+
+    Public Sub loadBranchesv2()
+        Dim dal As New DAL_Mssql
+        Dim reportDate As String = Now.ToString("yyyy-MM-dd")
+        'Dim reportDate As String = "2022-04-16"
+        Try
+            Dim sb As New System.Text.StringBuilder
+            sb.Append("Select DISTINCT SSINFOTERMKIOSK.KIOSK_ID,SSINFOTERMKIOSK.BRANCH_IP,SSINFOTERMBR.BRANCH_NM, sm.OFFLINE_DT, Case When sm.OFFLINE_DT Is null Then 'ONLINE' ELSE 'OFFLINE' end TAG ")
+            sb.Append("From SSINFOTERMKIOSK INNER Join SSINFOTERMBR On SSINFOTERMKIOSK.BRANCH_CD=SSINFOTERMBR.BRANCH_CD LEFT OUTER JOIN ")
+            sb.Append(String.Format("(Select BRANCH_IP, OFFLINE_DT From SSMONITORING Where STATUS = 1 And DATESTAMP BETWEEN '{0} 00:00:00' AND '{0} 23:59:59') sm on sm.branch_ip = SSINFOTERMKIOSK.BRANCH_IP ", reportDate))
+            sb.Append("where SSINFOTERMKIOSK.BRANCH_CD <> '' and SSINFOTERMKIOSK.BRANCH_IP <> '' and SSINFOTERMKIOSK.isVPN = 0 ")
+            sb.Append("ORDER BY SSINFOTERMBR.BRANCH_NM ")
+
+            If dal.SelectQuery(sb.ToString) Then
+                Dim dtOnline = GetOnlineOfflineData("ONLINE", dal.TableResult)
+                If Not dtOnline Is Nothing Then db.FillListView(dtOnline, lvList)
+
+                Dim dtOffline = GetOnlineOfflineData("OFFLINE", dal.TableResult)
+                If Not dtOffline Is Nothing Then db.FillListView(dtOffline, lvPC)
+
+                'Dim dtOnline As DataTable = dal.TableResult.AsEnumerable().Where(Function(r) r.Field(Of String)("TAG") = "ONLINE").CopyToDataTable()
+                'Dim dtOffline As DataTable = dal.TableResult.AsEnumerable().Where(Function(r) r.Field(Of String)("TAG") = "OFFLINE").CopyToDataTable()
+                'db.FillListView(dtOnline, lvList)
+                'db.FillListView(dtOffline, lvPC)
+
+                Label7.Text = String.Format("ONLINE ({0})", lvList.Items.Count.ToString())
+                Label10.Text = String.Format("OFFLINE ({0})", lvPC.Items.Count.ToString())
+            End If
         Catch ex As Exception
-            MsgBox(ex.ToString)
+            'MsgBox(ex.ToString)
+            Utilities.ShowErrorMessageBox(ex.Message)
+        Finally
+            dal.Dispose()
+            dal = Nothing
         End Try
     End Sub
+
+    Private Function GetOnlineOfflineData(ByVal tag As String, ByVal dt As DataTable) As DataTable
+        Try
+            Return dt.AsEnumerable().Where(Function(r) r.Field(Of String)("TAG") = tag).CopyToDataTable
+        Catch ex As Exception
+            Return Nothing
+        End Try
+
+    End Function
 
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
         dgvLogs.Visible = False
@@ -258,34 +322,45 @@ Public Class _frmMonitoring
         Dim newview As New CrystalReportViewer
 
         Try
+            'Dim rpt As New MonitoringKioskStatusv2
+            'cryRpt = rpt
+
+            ''cryRpt.SetDatabaseLogon(My.Settings.db_UName, My.Settings.db_Pass)
+            'OpenReportDbase()
+            'rptView.ReportSource = cryRpt
+
             getFileName = "LIST OF SET OFFLINE"
             'dt = db.ExecuteSQLQuery("SELECT t1.BRANCH_IP,case when t1.STATUS = 1 then 'ONLINE' else '*** OFFLINE ****' end as [Status],SSINFOTERMBR.BRANCH_NM,(select ISNULL(SUM(case when t2.ONLINE_TME <> '' then cast(round(cast(t2.MSG as FLOAT),2)/ 60.0 as DECIMAL(12,2)) end),0) from SSINFOTERMCONSTAT t2 where DATESTAMP = '" & Date.Now & "' and t1.BRANCH_IP = t2.BRANCH_IP) as [ONLINE HRS],(select case when t1.STATUS = '0' then t1.LOFFLINE_DT else NULL end as [OFFLINE] from SSINFOTERMKIOSK t1 where t1.BRANCH_IP = t2.BRANCH_IP) as [OFFLINE DATE],(select sum(case when t1.STATUS = 1 then 1 else 0 end) from SSINFOTERMKIOSK t1  where isVPN = 'false' and tag = 1) as [ONLINE COUNT], (select sum(case when t1.STATUS = 0 then 1 else 0 end) from SSINFOTERMKIOSK t1  where isVPN = 'false' and tag = 1) as [OFFLINE COUNT] FROM SSINFOTERMKIOSK t1 INNER JOIN SSINFOTERMCONSTAT t2 ON t2.BRANCH_IP = t1.BRANCH_IP INNER JOIN SSINFOTERMBR ON t1.BRANCH_CD = SSINFOTERMBR.BRANCH_CD where isVPN = 'false' and tag = 1 GROUP BY t1.BRANCH_IP,SSINFOTERMBR.BRANCH_NM,t1.LOFFLINE_DT,t2.BRANCH_IP,t1.STATUS ORDER BY SSINFOTERMBR.BRANCH_NM asc")
             Dim rpt As New MonitoringKioskStatus
             cryRpt = rpt
             '  cryRpt.Refresh()
             cryRpt.SetDatabaseLogon(My.Settings.db_UName, My.Settings.db_Pass)
+            'OpenReportDbase()
             newview.ReportSource = cryRpt
-            cryRpt.SetParameterValue("@getDate", Date.Now)
+            'cryRpt.SetParameterValue("@getDate", Date.Now)
+
+            Dim reportDate As String = Now.ToString("yyyy-MM-dd")
+            'Dim reportDate As String = "2022-03-01"
+
+            cryRpt.SetParameterValue("@DateFrom", Convert.ToDateTime(reportDate & " 00:00:00"))
+            cryRpt.SetParameterValue("@DateTo", Convert.ToDateTime(reportDate & " 23:59:59"))
+            cryRpt.SetParameterValue("@getName", "")
 
             Dim getdate As String = Date.Today.ToShortDateString
-            Dim gettime As String = TimeOfDay
-            getdate = getdate.Replace("/", "-")
-            gettime = gettime.Replace(":", ".")
+            'Dim gettime As String = TimeOfDay
+            'getdate = getdate.Replace("/", "-")
+            'gettime = gettime.Replace(":", ".")
             Dim myPath As String = Application.StartupPath & "\Monitoring"
-            If (Not System.IO.Directory.Exists(myPath)) Then
-                System.IO.Directory.CreateDirectory(myPath)
-            End If
-
+            If (Not System.IO.Directory.Exists(myPath)) Then System.IO.Directory.CreateDirectory(myPath)
 
             Dim CrExportOptions As ExportOptions
-            Dim CrDiskFileDestinationOptions As New  _
-   DiskFileDestinationOptions()
+            Dim CrDiskFileDestinationOptions As New DiskFileDestinationOptions()
             Dim CrFormatTypeOptions As New ExcelFormatOptions
             CrFormatTypeOptions.ExcelUseConstantColumnWidth = True
             CrFormatTypeOptions.ExcelConstantColumnWidth = 2000
             CrFormatTypeOptions.ShowGridLines = True
-            CrDiskFileDestinationOptions.DiskFileName = _
-                                        myPath & "\" & getFileName & " " & getdate & " " & gettime & ".xls"
+            CrDiskFileDestinationOptions.DiskFileName = myPath & "\" & getFileName & " " & Now.ToString("MM-dd-yyyy hh.mm.ss tt") & ".xls"
+            'myPath & "\" & getFileName & " " & getdate & " " & gettime & ".xls"
             CrExportOptions = cryRpt.ExportOptions
             With CrExportOptions
                 .ExportDestinationType = ExportDestinationType.DiskFile
@@ -294,22 +369,35 @@ Public Class _frmMonitoring
                 .FormatOptions = CrFormatTypeOptions
             End With
             cryRpt.Export()
-            MsgBox("Scan complete.")
+            'MsgBox("Scan complete.")
+            Utilities.ShowInfoMessageBox("Scan complete." & vbNewLine & vbNewLine & "File is successfully saved in " + CrDiskFileDestinationOptions.DiskFileName)
         Catch ex As Exception
-            MsgBox(ex.ToString)
+            'MsgBox(ex.ToString)
+            Utilities.ShowErrorMessageBox(ex.Message)
         End Try
-
-
     End Sub
     Private Sub Button1_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
-        Button1.Enabled = False
-        lvList.Enabled = False
-        lvPC.Enabled = False
-        loadBranches()
-        lvList.Enabled = True
-        lvPC.Enabled = True
+        'Button1.Enabled = False
+        'lvList.Enabled = False
+        'lvPC.Enabled = False
+        'loadBranchesv2()
+        'lvList.Enabled = True
+        'lvPC.Enabled = True
+        'operationFileTrans()
+        'Button1.Enabled = True
+
+        Cursor = Cursors.WaitCursor
+        Me.Enabled = False
+
+        trd = New Thread(AddressOf ThreadTask)
+        trd.IsBackground = True
+        trd.Start()
+
         operationFileTrans()
-        Button1.Enabled = True
+
+        Me.Enabled = True
+        Cursor = Cursors.Default
+
     End Sub
 
 End Class

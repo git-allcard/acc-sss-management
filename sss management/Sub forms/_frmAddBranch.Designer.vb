@@ -127,7 +127,7 @@ Partial Class _frmAddBranch
         Me.Label3.ForeColor = System.Drawing.Color.White
         Me.Label3.Location = New System.Drawing.Point(34, 101)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(49, 13)
+        Me.Label3.Size = New System.Drawing.Size(48, 13)
         Me.Label3.TabIndex = 8
         Me.Label3.Text = "Branch :"
         '
@@ -137,7 +137,7 @@ Partial Class _frmAddBranch
         Me.Label4.ForeColor = System.Drawing.Color.White
         Me.Label4.Location = New System.Drawing.Point(4, 129)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(79, 13)
+        Me.Label4.Size = New System.Drawing.Size(78, 13)
         Me.Label4.TabIndex = 9
         Me.Label4.Text = "Branch Code :"
         '
@@ -163,6 +163,7 @@ Partial Class _frmAddBranch
         Me.lvList.ForeColor = System.Drawing.Color.Black
         Me.lvList.FullRowSelect = True
         Me.lvList.GridLines = True
+        Me.lvList.HideSelection = False
         Me.lvList.Location = New System.Drawing.Point(405, 9)
         Me.lvList.Name = "lvList"
         Me.lvList.Size = New System.Drawing.Size(335, 190)

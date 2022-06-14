@@ -95,6 +95,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
@@ -127,6 +128,7 @@
     <Compile Include="Class\SharedFunction.vb" />
     <Compile Include="Class\UploadFTP.vb" />
     <Compile Include="Class\userRole.vb" />
+    <Compile Include="Class\Utilities.vb" />
     <Compile Include="Form1.Designer.vb">
       <DependentUpon>Form1.vb</DependentUpon>
     </Compile>

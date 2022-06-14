@@ -298,19 +298,21 @@ Public Class _frmKiosk
                     a = a + 1
                     eHrs.Visible = False
                 End If
-                If txtIpAdd.Text = Nothing Then
-                    a = a - 1
-                    kip.Visible = True
-                Else
-                    a = a + 1
-                    kip.Visible = False
-                End If
                 If isVpn = Nothing Then
                     a = a - 1
                     lanvip.Visible = True
                 Else
                     a = a + 1
                     lanvip.Visible = False
+
+                    'added by edel on june2022. validate ip if isVpn=false
+                    If txtIpAdd.Text = Nothing And isVpn = "False" Then
+                        a = a - 1
+                        kip.Visible = True
+                    Else
+                        a = a + 1
+                        kip.Visible = False
+                    End If
                 End If
                 If a = 10 Then
 

@@ -2,6 +2,12 @@ Public Class _frmAddBranch
     Dim db As New ConnectionString
     Dim x As Integer
     Dim y As Integer
+
+    Private Sub _frmAddBranch_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        db.fillComboBox(db.ExecuteSQLQuery("select GROUP_NM from SSINFOTERMGROUP"), cbGroup)
+        db.fillComboBox(db.ExecuteSQLQuery("select CLSTR_NM from SSINFOTERMCLSTR"), cbCluster)
+    End Sub
+
     Public Sub clear()
         cbGroup.Text = Nothing
         cbCluster.Text = Nothing
@@ -43,10 +49,7 @@ Public Class _frmAddBranch
     Public Sub loadBranches()
         db.FillListView(db.ExecuteSQLQuery("Select SSINFOTERMGROUP.GROUP_NM as 'Group',SSINFOTERMCLSTR.CLSTR_NM as 'Division',SSINFOTERMBR.BRANCH_NM as 'Branch' from SSINFOTERMBR INNER JOIN SSINFOTERMCLSTR ON SSINFOTERMCLSTR.CLSTR_CD = SSINFOTERMBR.CLSTR_CD INNER JOIN SSINFOTERMGROUP ON SSINFOTERMGROUP.GROUP_CD = SSINFOTERMBR.GROUP_CD"), lvList)
     End Sub
-    Private Sub _frmAddBranch_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        db.fillComboBox(db.ExecuteSQLQuery("select GROUP_NM from SSINFOTERMGROUP"), cbGroup)
-        db.fillComboBox(db.ExecuteSQLQuery("select CLSTR_NM from SSINFOTERMCLSTR"), cbCluster)
-    End Sub
+
 
     Private Sub cbGroup_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbGroup.SelectedIndexChanged
         db.fillComboBox(db.ExecuteSQLQuery("SELECT CLSTR_NM FROM SSINFOTERMCLSTR INNER JOIN SSINFOTERMGROUP ON SSINFOTERMGROUP.GROUP_CD = SSINFOTERMCLSTR.GROUP_CD where SSINFOTERMGROUP.GROUP_NM = '" & cbGroup.Text & "'"), cbCluster)
@@ -134,4 +137,5 @@ Public Class _frmAddBranch
         cbCluster.Text = Cluster
         txtBranchCode.Text = BranchCode
     End Sub
+
 End Class
