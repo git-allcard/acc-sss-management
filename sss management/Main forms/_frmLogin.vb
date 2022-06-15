@@ -513,10 +513,9 @@ Public Class _frmLogin
     End Sub
 
     Private Sub ButtonX2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClose.Click
-
         _frmViewReports.rptView.Dispose()
-        Application.Exit()
-
+        'Application.Exit()
+        Environment.Exit(0)
     End Sub
 
     Private Sub chkRememberMe_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkRemember.CheckedChanged
