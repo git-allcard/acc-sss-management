@@ -1,13 +1,32 @@
+
+#Region " Imports "
+
 Imports CrystalDecisions.CrystalReports.Engine
 Imports CrystalDecisions.Shared
 Imports System.Drawing
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement
 Imports System.Threading
+
+#End Region
+
 Public Class _frmDashboard
+
+#Region " Constructors "
+
     Dim db As New ConnectionString
     Dim getAutoGenID As String
     Dim trd As Thread
 
+#End Region
+
+    Private Sub _frmDashboard_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        CheckForIllegalCrossThreadCalls = False
+        ''If MessageBox.Show("Loading of dashboard data may take time. Do you want to continue?", Me.Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+        ''Timer1.Start()
+
+        StartThread()
+        ''End If
+    End Sub
     Public Sub loadDetailslvList()
         Try
             RefreshDb()
@@ -65,21 +84,14 @@ Public Class _frmDashboard
             lblOnline.Text = "0"
             lblOffline.Text = "0"
             lblSO.Text = "0"
-            lblOffline.Text = db.putSingleValuev2("SELECT COUNT(DISTINCT SSINFOTERMKIOSK.KIOSK_ID) FROM SSINFOTERMKIOSK INNER JOIN SSINFOTERMBR ON SSINFOTERMKIOSK.BRANCH_CD=SSINFOTERMBR.BRANCH_CD INNER JOIN SSMONITORING ON SSINFOTERMKIOSK.BRANCH_IP=SSMONITORING.BRANCH_IP WHERE SSMONITORING.STATUS = 1 AND " & dateStampFiltering(Today.ToString("yyyy-MM-dd")) & " and isvpn = 0", lblOffline.Text)
-            lblOnline.Text = db.putSingleValuev2("SELECT COUNT(DISTINCT SSINFOTERMKIOSK.KIOSK_ID) FROM SSINFOTERMKIOSK INNER JOIN SSINFOTERMBR ON SSINFOTERMKIOSK.BRANCH_CD=SSINFOTERMBR.BRANCH_CD WHERE (SSINFOTERMKIOSK.BRANCH_IP NOT IN(SELECT BRANCH_IP FROM SSMONITORING) OR BRANCH_IP NOT IN(SELECT DISTINCT BRANCH_IP FROM SSMONITORING WHERE STATUS=1 AND " & dateStampFiltering(Today.ToString("yyyy-MM-dd")) & " )) and isvpn = 0", lblOnline.Text)
-            lblSO.Text = db.putSingleValuev2("SELECT COUNT(DISTINCT SSINFOTERMKIOSK.KIOSK_ID) FROM SSINFOTERMKIOSK WHERE isvpn = 1")
+            'lblOffline.Text = db.putSingleValuev2("SELECT COUNT(DISTINCT SSINFOTERMKIOSK.KIOSK_ID) FROM SSINFOTERMKIOSK INNER JOIN SSINFOTERMBR ON SSINFOTERMKIOSK.BRANCH_CD=SSINFOTERMBR.BRANCH_CD INNER JOIN SSMONITORING ON SSINFOTERMKIOSK.BRANCH_IP=SSMONITORING.BRANCH_IP WHERE SSMONITORING.STATUS = 1 AND " & dateStampFiltering(Today.ToString("yyyy-MM-dd")) & " and isvpn = 0", lblOffline.Text)
+            'lblOnline.Text = db.putSingleValuev2("SELECT COUNT(DISTINCT SSINFOTERMKIOSK.KIOSK_ID) FROM SSINFOTERMKIOSK INNER JOIN SSINFOTERMBR ON SSINFOTERMKIOSK.BRANCH_CD=SSINFOTERMBR.BRANCH_CD WHERE (SSINFOTERMKIOSK.BRANCH_IP NOT IN(SELECT BRANCH_IP FROM SSMONITORING) OR BRANCH_IP NOT IN(SELECT DISTINCT BRANCH_IP FROM SSMONITORING WHERE STATUS=1 AND " & dateStampFiltering(Today.ToString("yyyy-MM-dd")) & " )) and isvpn = 0", lblOnline.Text)
+            'lblSO.Text = db.putSingleValuev2("SELECT COUNT(DISTINCT SSINFOTERMKIOSK.KIOSK_ID) FROM SSINFOTERMKIOSK WHERE isvpn = 1")
             Dim i As Integer = lblOnline.Text
             Dim x As Integer = lblOffline.Text
             Dim z As Integer = lblSO.Text
             lbltotal.Text = i + x + z
 
-            'Dim delfillListview As New dlgtfillKioskNum(AddressOf fillListview)
-            'Dim delfillData As New dlgtfillKioskNum(AddressOf fillData)
-            'delfillListview.Invoke()
-            'delfillData.Invoke()
-            'lvGroup.Columns(0).Width = -2
-            'lvDiv.Columns(0).Width = -2
-            'lvDivsn.Columns(0).Width = -2
         Catch ex As Exception
             'MsgBox(ex.ToString)
         End Try
@@ -107,17 +119,34 @@ Public Class _frmDashboard
 
     Public Sub PopulateLVList()
         Dim dal As New DAL_Mssql
-        Dim reportDate As String = Now.ToString("yyyy-MM-dd")
-        'Dim reportDate As String = "2022-04-16"
+        'Dim reportDate As String = Now.ToString("yyyy-MM-dd")
+        Dim reportDate As String = "2022-04-16"
         Try
             Dim sb As New System.Text.StringBuilder
-            sb.Append("Select DISTINCT SSINFOTERMKIOSK.KIOSK_ID,SSINFOTERMKIOSK.BRANCH_IP,SSINFOTERMBR.BRANCH_NM, sm.OFFLINE_DT, Case When sm.OFFLINE_DT Is null Then 'ONLINE' ELSE 'OFFLINE' end TAG ")
+            sb.Append("Select DISTINCT SSINFOTERMKIOSK.KIOSK_ID,SSINFOTERMKIOSK.BRANCH_IP,SSINFOTERMBR.BRANCH_NM, sm.OFFLINE_DT, Case When sm.OFFLINE_DT Is null Then 'ONLINE' ELSE 'OFFLINE' end TAG, SSINFOTERMKIOSK.isVPN ")
             sb.Append("From SSINFOTERMKIOSK INNER Join SSINFOTERMBR On SSINFOTERMKIOSK.BRANCH_CD=SSINFOTERMBR.BRANCH_CD LEFT OUTER JOIN ")
             sb.Append(String.Format("(Select BRANCH_IP, OFFLINE_DT From SSMONITORING Where STATUS = 1 And DATESTAMP BETWEEN '{0} 00:00:00' AND '{0} 23:59:59') sm on sm.branch_ip = SSINFOTERMKIOSK.BRANCH_IP ", reportDate))
-            sb.Append("where SSINFOTERMKIOSK.BRANCH_CD <> '' and SSINFOTERMKIOSK.BRANCH_IP <> '' and SSINFOTERMKIOSK.isVPN = 0 ")
+            sb.Append("where SSINFOTERMKIOSK.BRANCH_CD <> '' ") 'and SSINFOTERMKIOSK.isVPN = 0 ")
             sb.Append("ORDER BY SSINFOTERMKIOSK.KIOSK_ID ")
 
-            If dal.SelectQuery(sb.ToString) Then db.FillListView(dal.TableResult, lvList)
+            If dal.SelectQuery(sb.ToString) Then
+                Dim dtMain As DataTable = dal.TableResult
+                Dim dtWithIP As DataTable = GetOnlineOfflineDataWithIP(dtMain)
+
+                If Not dtWithIP Is Nothing Then
+                    Dim dtOnlineOffline As DataTable = GetOnlineOfflineData(2, "isVPN", 0, dtWithIP)
+                    If Not dtOnlineOffline Is Nothing Then
+                        dtOnlineOffline.Columns.Remove("isVPN")
+                        db.FillListView(dtOnlineOffline, lvList)
+                    End If
+
+                    lblOnline.Text = dtOnlineOffline.Select("TAG='ONLINE'").Length.ToString()
+                    lblOffline.Text = dtOnlineOffline.Select("TAG='OFFLINE'").Length.ToString()
+                End If
+
+                lblSO.Text = dtMain.Select("isVPN=1").Length.ToString()
+                lbltotal.Text = dtMain.DefaultView.Count.ToString()
+            End If
         Catch ex As Exception
 
         Finally
@@ -125,6 +154,29 @@ Public Class _frmDashboard
             dal = Nothing
         End Try
     End Sub
+
+    Private Function GetOnlineOfflineData(ByVal type As Short, ByVal field As String, ByVal value As String, ByVal dt As DataTable) As DataTable
+        Try
+            'type: 1=string, 2=boolean
+            If type = 1 Then
+                Return dt.AsEnumerable().Where(Function(r) r.Field(Of String)(field) = value).CopyToDataTable
+            ElseIf type = 2 Then
+                Return dt.AsEnumerable().Where(Function(r) r.Field(Of Boolean)(field) = value).CopyToDataTable
+            End If
+        Catch ex As Exception
+            Return Nothing
+        End Try
+
+    End Function
+
+    Private Function GetOnlineOfflineDataWithIP(ByVal dt As DataTable) As DataTable
+        Try
+            Return dt.AsEnumerable().Where(Function(r) r.Field(Of String)("BRANCH_IP") <> "").CopyToDataTable
+        Catch ex As Exception
+            Return Nothing
+        End Try
+
+    End Function
 
     Private Function dateStampFiltering(ByVal reportDate As String) As String
         Return String.Format(" DATESTAMP BETWEEN '{0} 00:00:00' AND '{0} 23:59:59'", reportDate)
@@ -216,14 +268,7 @@ Public Class _frmDashboard
         'lvList.Columns(3).Width = 0
         lvList.Columns(4).Width = 0
     End Sub
-    Private Sub _frmDashboard_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        CheckForIllegalCrossThreadCalls = False
-        ''If MessageBox.Show("Loading of dashboard data may take time. Do you want to continue?", Me.Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
-        ''Timer1.Start()
 
-        StartThread()
-        ''End If
-    End Sub
 
     Private Delegate Sub dlgtPopulateData()
 

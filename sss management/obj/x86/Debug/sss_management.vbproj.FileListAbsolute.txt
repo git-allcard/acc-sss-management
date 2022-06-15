@@ -889,4 +889,3 @@ C:\EDEL\Projects\acc-sss-management\sss management\bin\Debug\ShockwaveFlashObjec
 C:\EDEL\Projects\acc-sss-management\sss management\bin\Debug\stdole.dll
 C:\EDEL\Projects\acc-sss-management\sss management\bin\Debug\DevComponents.DotNetBar2.xml
 C:\EDEL\Projects\acc-sss-management\sss management\obj\x86\Debug\sss_management.vbproj.CopyComplete
-C:\EDEL\Projects\acc-sss-management\sss management\obj\x86\Debug\sss_management.vbproj.AssemblyReference.cache
