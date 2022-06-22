@@ -269,6 +269,9 @@ Public Class _frmMain
 
         lblVersion.Text = ApplicationVersion()
 
+        Dim logFolder = String.Concat(Application.StartupPath, "\Log")
+        If Not Directory.Exists(logFolder) Then Directory.CreateDirectory(logFolder)
+
         SplitContainer1.SetBounds(100, 100, 100, 100)
         SplitContainer1.VerticalScroll.Enabled = False
         getUserRole = db.putSingleValue("select mgmt_usertype from tbl_Mgmt_UserRegistration where mgmt_username ='" & _frmLogin.txtUname.Text & "'")

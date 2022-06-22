@@ -1,3 +1,7 @@
+
+
+
+
 Imports System.Threading
 Imports CrystalDecisions.CrystalReports.Engine
 Imports CrystalDecisions.Shared
@@ -15,6 +19,7 @@ Public Class _frmMonitoring
     Dim endThread As Boolean = False
     Dim dt As DataTable
     Dim cryRpt As New ReportDocument
+
 #Region "Listview Clicked event"
     Public Sub loadDetailslvPC()
         Try

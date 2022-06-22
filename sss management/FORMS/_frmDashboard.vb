@@ -163,6 +163,8 @@ Public Class _frmDashboard
             ElseIf type = 2 Then
                 Return dt.AsEnumerable().Where(Function(r) r.Field(Of Boolean)(field) = value).CopyToDataTable
             End If
+
+            Return Nothing
         Catch ex As Exception
             Return Nothing
         End Try

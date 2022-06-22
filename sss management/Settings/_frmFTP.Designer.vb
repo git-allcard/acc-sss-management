@@ -24,11 +24,11 @@ Partial Class _frmFTP
     Private Sub InitializeComponent()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Panel5 = New System.Windows.Forms.Panel()
-        Me.Button2 = New System.Windows.Forms.Button()
+        Me.btnTest = New System.Windows.Forms.Button()
         Me.txtFTPName = New System.Windows.Forms.TextBox()
         Me.Label2 = New System.Windows.Forms.Label()
-        Me.Button1 = New System.Windows.Forms.Button()
-        Me.Button5 = New System.Windows.Forms.Button()
+        Me.btnNewSettings = New System.Windows.Forms.Button()
+        Me.btnRemove = New System.Windows.Forms.Button()
         Me.cbSettings = New System.Windows.Forms.ComboBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Label26 = New System.Windows.Forms.Label()
@@ -37,7 +37,7 @@ Partial Class _frmFTP
         Me.FTP = New System.Windows.Forms.Label()
         Me.Label24 = New System.Windows.Forms.Label()
         Me.label222 = New System.Windows.Forms.Label()
-        Me.Button7 = New System.Windows.Forms.Button()
+        Me.btnSave = New System.Windows.Forms.Button()
         Me.FTPPASS = New System.Windows.Forms.TextBox()
         Me.FTPUN = New System.Windows.Forms.TextBox()
         Me.FTPIP = New System.Windows.Forms.TextBox()
@@ -57,11 +57,11 @@ Partial Class _frmFTP
         'Panel5
         '
         Me.Panel5.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.Panel5.Controls.Add(Me.Button2)
+        Me.Panel5.Controls.Add(Me.btnTest)
         Me.Panel5.Controls.Add(Me.txtFTPName)
         Me.Panel5.Controls.Add(Me.Label2)
-        Me.Panel5.Controls.Add(Me.Button1)
-        Me.Panel5.Controls.Add(Me.Button5)
+        Me.Panel5.Controls.Add(Me.btnNewSettings)
+        Me.Panel5.Controls.Add(Me.btnRemove)
         Me.Panel5.Controls.Add(Me.cbSettings)
         Me.Panel5.Controls.Add(Me.Label1)
         Me.Panel5.Controls.Add(Me.Label26)
@@ -70,7 +70,7 @@ Partial Class _frmFTP
         Me.Panel5.Controls.Add(Me.FTP)
         Me.Panel5.Controls.Add(Me.Label24)
         Me.Panel5.Controls.Add(Me.label222)
-        Me.Panel5.Controls.Add(Me.Button7)
+        Me.Panel5.Controls.Add(Me.btnSave)
         Me.Panel5.Controls.Add(Me.FTPPASS)
         Me.Panel5.Controls.Add(Me.FTPUN)
         Me.Panel5.Controls.Add(Me.FTPIP)
@@ -80,16 +80,16 @@ Partial Class _frmFTP
         Me.Panel5.Size = New System.Drawing.Size(858, 653)
         Me.Panel5.TabIndex = 32
         '
-        'Button2
+        'btnTest
         '
-        Me.Button2.BackColor = System.Drawing.SystemColors.ControlLightLight
-        Me.Button2.Font = New System.Drawing.Font("Segoe UI", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button2.Location = New System.Drawing.Point(184, 529)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(241, 92)
-        Me.Button2.TabIndex = 35
-        Me.Button2.Text = "Test connection"
-        Me.Button2.UseVisualStyleBackColor = False
+        Me.btnTest.BackColor = System.Drawing.SystemColors.ControlLightLight
+        Me.btnTest.Font = New System.Drawing.Font("Segoe UI", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnTest.Location = New System.Drawing.Point(184, 529)
+        Me.btnTest.Name = "btnTest"
+        Me.btnTest.Size = New System.Drawing.Size(241, 92)
+        Me.btnTest.TabIndex = 35
+        Me.btnTest.Text = "Test connection"
+        Me.btnTest.UseVisualStyleBackColor = False
         '
         'txtFTPName
         '
@@ -109,27 +109,27 @@ Partial Class _frmFTP
         Me.Label2.TabIndex = 33
         Me.Label2.Text = "NAME :"
         '
-        'Button1
+        'btnNewSettings
         '
-        Me.Button1.BackColor = System.Drawing.SystemColors.ControlLightLight
-        Me.Button1.Font = New System.Drawing.Font("Segoe UI", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button1.Location = New System.Drawing.Point(305, 431)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(241, 92)
-        Me.Button1.TabIndex = 32
-        Me.Button1.Text = "New Settings"
-        Me.Button1.UseVisualStyleBackColor = False
+        Me.btnNewSettings.BackColor = System.Drawing.SystemColors.ControlLightLight
+        Me.btnNewSettings.Font = New System.Drawing.Font("Segoe UI", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnNewSettings.Location = New System.Drawing.Point(305, 431)
+        Me.btnNewSettings.Name = "btnNewSettings"
+        Me.btnNewSettings.Size = New System.Drawing.Size(241, 92)
+        Me.btnNewSettings.TabIndex = 32
+        Me.btnNewSettings.Text = "New Settings"
+        Me.btnNewSettings.UseVisualStyleBackColor = False
         '
-        'Button5
+        'btnRemove
         '
-        Me.Button5.BackColor = System.Drawing.SystemColors.ControlLightLight
-        Me.Button5.Font = New System.Drawing.Font("Segoe UI", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button5.Location = New System.Drawing.Point(646, 157)
-        Me.Button5.Name = "Button5"
-        Me.Button5.Size = New System.Drawing.Size(184, 50)
-        Me.Button5.TabIndex = 29
-        Me.Button5.Text = "Remove Settings"
-        Me.Button5.UseVisualStyleBackColor = False
+        Me.btnRemove.BackColor = System.Drawing.SystemColors.ControlLightLight
+        Me.btnRemove.Font = New System.Drawing.Font("Segoe UI", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnRemove.Location = New System.Drawing.Point(646, 157)
+        Me.btnRemove.Name = "btnRemove"
+        Me.btnRemove.Size = New System.Drawing.Size(184, 50)
+        Me.btnRemove.TabIndex = 29
+        Me.btnRemove.Text = "Remove Settings"
+        Me.btnRemove.UseVisualStyleBackColor = False
         '
         'cbSettings
         '
@@ -166,7 +166,7 @@ Partial Class _frmFTP
         Me.Label25.Font = New System.Drawing.Font("Segoe UI", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label25.Location = New System.Drawing.Point(34, 390)
         Me.Label25.Name = "Label25"
-        Me.Label25.Size = New System.Drawing.Size(209, 30)
+        Me.Label25.Size = New System.Drawing.Size(208, 30)
         Me.Label25.TabIndex = 26
         Me.Label25.Text = "TIME TO TRANSFER :"
         '
@@ -210,21 +210,21 @@ Partial Class _frmFTP
         Me.label222.Font = New System.Drawing.Font("Segoe UI", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.label222.Location = New System.Drawing.Point(106, 301)
         Me.label222.Name = "label222"
-        Me.label222.Size = New System.Drawing.Size(136, 30)
+        Me.label222.Size = New System.Drawing.Size(135, 30)
         Me.label222.TabIndex = 18
         Me.label222.Text = "PASSWORD :"
         '
-        'Button7
+        'btnSave
         '
-        Me.Button7.BackColor = System.Drawing.SystemColors.ControlLightLight
-        Me.Button7.Enabled = False
-        Me.Button7.Font = New System.Drawing.Font("Segoe UI", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button7.Location = New System.Drawing.Point(431, 529)
-        Me.Button7.Name = "Button7"
-        Me.Button7.Size = New System.Drawing.Size(241, 92)
-        Me.Button7.TabIndex = 18
-        Me.Button7.Text = "Save Settings"
-        Me.Button7.UseVisualStyleBackColor = False
+        Me.btnSave.BackColor = System.Drawing.SystemColors.ControlLightLight
+        Me.btnSave.Enabled = False
+        Me.btnSave.Font = New System.Drawing.Font("Segoe UI", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSave.Location = New System.Drawing.Point(431, 529)
+        Me.btnSave.Name = "btnSave"
+        Me.btnSave.Size = New System.Drawing.Size(241, 92)
+        Me.btnSave.TabIndex = 18
+        Me.btnSave.Text = "Save Settings"
+        Me.btnSave.UseVisualStyleBackColor = False
         '
         'FTPPASS
         '
@@ -276,15 +276,15 @@ Partial Class _frmFTP
     Friend WithEvents FTP As System.Windows.Forms.Label
     Friend WithEvents Label24 As System.Windows.Forms.Label
     Friend WithEvents label222 As System.Windows.Forms.Label
-    Friend WithEvents Button7 As System.Windows.Forms.Button
+    Friend WithEvents btnSave As System.Windows.Forms.Button
     Friend WithEvents FTPPASS As System.Windows.Forms.TextBox
     Friend WithEvents FTPUN As System.Windows.Forms.TextBox
     Friend WithEvents FTPIP As System.Windows.Forms.TextBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents Button5 As System.Windows.Forms.Button
+    Friend WithEvents btnRemove As System.Windows.Forms.Button
     Friend WithEvents cbSettings As System.Windows.Forms.ComboBox
-    Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents btnNewSettings As System.Windows.Forms.Button
     Friend WithEvents txtFTPName As System.Windows.Forms.TextBox
     Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents Button2 As System.Windows.Forms.Button
+    Friend WithEvents btnTest As System.Windows.Forms.Button
 End Class

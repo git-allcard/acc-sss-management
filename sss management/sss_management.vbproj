@@ -83,6 +83,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\CrystalDecisions.Windows.Forms.dll</HintPath>
     </Reference>
+    <Reference Include="DAL">
+      <HintPath>..\..\acc-sss-ssit-connection-checker\Test12345\bin\Debug\DAL.dll</HintPath>
+    </Reference>
     <Reference Include="DevComponents.DotNetBar2, Version=14.1.0.37, Culture=neutral, PublicKeyToken=7eb7c3a35b91de04, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files (x86)\DotNetBar for Windows Forms\DevComponents.DotNetBar2.dll</HintPath>
@@ -122,6 +125,7 @@
     <Compile Include="Class\DAL_Mssql.vb" />
     <Compile Include="Class\GenerateMonReport.vb" />
     <Compile Include="Class\IdleTime.vb" />
+    <Compile Include="Class\Log.vb" />
     <Compile Include="Class\mgmtRegistration.vb" />
     <Compile Include="Class\modFTP.vb" />
     <Compile Include="Class\RijndaelSimple.vb" />

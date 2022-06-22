@@ -37,22 +37,21 @@ Public Class ConnectionString
                 conn.Close()
                 conn.Open()
             Else
+                conn.ConnectionTimeout = 0
                 conn.Open()
             End If
-            conn.ConnectionTimeout = 0
+
             Dim da As OdbcDataAdapter = New OdbcDataAdapter(sql, conn)
             Dim ds As New DataSet
-            da.Fill(ds, tbl)
-            dt = ds.Tables(tbl)
+            If tbl <> "" Then
+                da.Fill(ds, tbl)
+                dt = ds.Tables(tbl)
+            Else
+                da.Fill(ds)
+                dt = ds.Tables(0)
+            End If
         Catch ex As Exception
-            'MsgBox("Error:" & ex.ToString)
-            Dim errorLogs As String = ex.ToString.Trim
-            'errorLogs = errorLogs.Trim
-            'sql = "insert into tbl_mgmt_errorlogs values('" & My.Settings.mgmtIP & "', '" & My.Settings.mgmtID & "', '" & My.Settings.mgmtName & "', '" & My.Settings.mgmtBranch & "', '" & errorLogs _
-            '    & "','" & "Class: Connection String" & "', '" & "Database connection error" & "', '" & Date.Today.ToShortDateString & "', '" & TimeOfDay & "') "
-            'ExecuteSQLQuery(sql)
-            SQL_ExecuteQuery(sql)
-            'MsgBox("Database connection error, Please contact system Administrator! ", MsgBoxStyle.Information)
+            Log.SaveLog(Log.logType.errorLog, String.Concat("getDataTable(): ", ex.Message))
 
             dt = Nothing
         Finally
