@@ -4,8 +4,10 @@ Public Class _frmAddBranch
     Dim y As Integer
 
     Private Sub _frmAddBranch_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        db.fillComboBox(db.ExecuteSQLQuery("select GROUP_NM from SSINFOTERMGROUP"), cbGroup)
-        db.fillComboBox(db.ExecuteSQLQuery("select CLSTR_NM from SSINFOTERMCLSTR"), cbCluster)
+        db.fillComboBox(db.ExecuteSQLQuery("select GROUP_NM from SSINFOTERMGROUP ORDER BY GROUP_NM"), cbGroup)
+        db.fillComboBox(db.ExecuteSQLQuery("select CLSTR_NM from SSINFOTERMCLSTR ORDER BY CLSTR_NM"), cbCluster)
+
+        loadBranches()
     End Sub
 
     Public Sub clear()
@@ -13,6 +15,8 @@ Public Class _frmAddBranch
         cbCluster.Text = Nothing
         txtBranch.Text = Nothing
         txtBranchCode.Text = Nothing
+        btnEdit.Visible = True
+        btnadd.Visible = True
     End Sub
     Public Sub edit()
         btnadd.Enabled = False
@@ -24,6 +28,7 @@ Public Class _frmAddBranch
                 disable()
                 clear()
             Case Else
+                _frmBlock.Close()
                 Me.Dispose()
                 Me.Close()
         End Select
@@ -47,55 +52,115 @@ Public Class _frmAddBranch
         txtBranchCode.Enabled = False
     End Sub
     Public Sub loadBranches()
-        db.FillListView(db.ExecuteSQLQuery("Select SSINFOTERMGROUP.GROUP_NM as 'Group',SSINFOTERMCLSTR.CLSTR_NM as 'Division',SSINFOTERMBR.BRANCH_NM as 'Branch' from SSINFOTERMBR INNER JOIN SSINFOTERMCLSTR ON SSINFOTERMCLSTR.CLSTR_CD = SSINFOTERMBR.CLSTR_CD INNER JOIN SSINFOTERMGROUP ON SSINFOTERMGROUP.GROUP_CD = SSINFOTERMBR.GROUP_CD"), lvList)
+        Dim sb As New System.Text.StringBuilder
+        sb.Append("Select SSINFOTERMGROUP.GROUP_NM as 'Group',SSINFOTERMCLSTR.CLSTR_NM as 'Division',SSINFOTERMBR.BRANCH_NM as 'Branch' from SSINFOTERMBR INNER JOIN SSINFOTERMCLSTR ON SSINFOTERMCLSTR.CLSTR_CD = SSINFOTERMBR.CLSTR_CD INNER JOIN SSINFOTERMGROUP ON SSINFOTERMGROUP.GROUP_CD = SSINFOTERMBR.GROUP_CD ")
+        sb.Append("order by SSINFOTERMGROUP.GROUP_NM, SSINFOTERMCLSTR.CLSTR_NM, SSINFOTERMBR.BRANCH_NM ")
+        db.FillListView(db.ExecuteSQLQuery(sb.ToString()), lvList)
     End Sub
 
 
     Private Sub cbGroup_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbGroup.SelectedIndexChanged
-        db.fillComboBox(db.ExecuteSQLQuery("SELECT CLSTR_NM FROM SSINFOTERMCLSTR INNER JOIN SSINFOTERMGROUP ON SSINFOTERMGROUP.GROUP_CD = SSINFOTERMCLSTR.GROUP_CD where SSINFOTERMGROUP.GROUP_NM = '" & cbGroup.Text & "'"), cbCluster)
+        db.fillComboBox(db.ExecuteSQLQuery("SELECT CLSTR_NM FROM SSINFOTERMCLSTR INNER JOIN SSINFOTERMGROUP ON SSINFOTERMGROUP.GROUP_CD = SSINFOTERMCLSTR.GROUP_CD where SSINFOTERMGROUP.GROUP_NM = '" & cbGroup.Text & "' ORDER BY CLSTR_NM"), cbCluster)
     End Sub
 
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
         Try
-            Select Case x
-                Case 1
-                    Dim getClusterCode As String = db.putSingleValue("select CLSTR_CD from SSINFOTERMCLSTR where CLSTR_NM = '" & cbCluster.Text & "'")
-                    Dim getGroupCode As String = db.putSingleValue("select GROUP_CD from SSINFOTERMGROUP where GROUP_NM = '" & cbGroup.Text & "'")
-                    If cbGroup.Text = "" Then
-                        MsgBox("Group is empty.", MsgBoxStyle.Exclamation)
-                    ElseIf cbCluster.Text = "" Then
-                        MsgBox("Division is empty.", MsgBoxStyle.Exclamation)
-                    ElseIf txtBranch.Text = "" Then
-                        MsgBox("Branch is empty.", MsgBoxStyle.Exclamation)
-                    ElseIf txtBranchCode.Text = "" Then
-                        MsgBox("Branch code is empty.", MsgBoxStyle.Exclamation)
-                    Else
-                        db.ExecuteSQLQuery("INSERT INTO SSINFOTERMBR (BRANCH_CD,BRANCH_NM,CLSTR_CD,GROUP_CD) values ('" & txtBranchCode.Text & "','" & txtBranch.Text & "','" & getClusterCode & "','" & getGroupCode & "')")
+            Dim getClusterCode As String = db.putSingleValue("select CLSTR_CD from SSINFOTERMCLSTR where CLSTR_NM = '" & cbCluster.Text & "'")
+            Dim getGroupCode As String = db.putSingleValue("select GROUP_CD from SSINFOTERMGROUP where GROUP_NM = '" & cbGroup.Text & "'")
+            If cbGroup.Text = "" Then
+                MsgBox("Group is empty.", MsgBoxStyle.Exclamation)
+            ElseIf cbCluster.Text = "" Then
+                MsgBox("Division is empty.", MsgBoxStyle.Exclamation)
+            ElseIf txtBranch.Text = "" Then
+                MsgBox("Branch is empty.", MsgBoxStyle.Exclamation)
+            ElseIf txtBranchCode.Text = "" Then
+                MsgBox("Branch code is empty.", MsgBoxStyle.Exclamation)
+            Else
+                Dim branchExist = db.checkExistence("Select BRANCH_CD FROM SSINFOTERMBR WHERE BRANCH_CD = '" & txtBranchCode.Text & "'")
+
+                If Not branchExist Then
+                    Dim resp = db.doNonQuery("INSERT INTO SSINFOTERMBR (BRANCH_CD,BRANCH_NM,CLSTR_CD,GROUP_CD) values ('" & txtBranchCode.Text & "','" & txtBranch.Text & "','" & getClusterCode & "','" & getGroupCode & "')")
+                    'db.ExecuteSQLQuery("INSERT INTO SSINFOTERMBR (BRANCH_CD,BRANCH_NM,CLSTR_CD,GROUP_CD) values ('" & txtBranchCode.Text & "','" & txtBranch.Text & "','" & getClusterCode & "','" & getGroupCode & "')")
+                    MsgBox("Successfully added.", MsgBoxStyle.Information)
+                    y = 0
+                    btnCancel.Text = "Close"
+                    btnSave.Text = "Save"
+                    disable()
+                    clear()
+
+                    loadBranches()
+                Else
+                    Dim resp = db.doNonQuery("UPDATE SSINFOTERMBR SET BRANCH_NM ='" & txtBranch.Text & "',BRANCH_CD = '" & txtBranchCode.Text & "',GROUP_CD = '" & getGroupCode & "',CLSTR_CD = '" & getClusterCode & "' where BRANCH_CD = '" & txtBranchCode.Text & "' ")
+                    If resp Then
                         MsgBox("Successfully saved.", MsgBoxStyle.Information)
                         y = 0
                         btnCancel.Text = "Close"
-                    End If
-                Case 2
-                    Dim getClusterCode As String = db.putSingleValue("select CLSTR_CD from SSINFOTERMCLSTR where CLSTR_NM = '" & cbCluster.Text & "'")
-                    Dim getGroupCode As String = db.putSingleValue("select GROUP_CD from SSINFOTERMGROUP where GROUP_NM = '" & cbGroup.Text & "'")
-                    If cbGroup.Text = "" Then
-                        MsgBox("Group is empty.", MsgBoxStyle.Exclamation)
-                    ElseIf cbCluster.Text = "" Then
-                        MsgBox("Division is empty.", MsgBoxStyle.Exclamation)
-                    ElseIf txtBranch.Text = "" Then
-                        MsgBox("Branch is empty.", MsgBoxStyle.Exclamation)
-                    ElseIf txtBranchCode.Text = "" Then
-                        MsgBox("Branch code is empty.", MsgBoxStyle.Exclamation)
-                    Else
-                        If db.checkExistence("Select BRANCH_CD FROM SSINFOTERMBR WHERE BRANCH_CD = '" & txtBranchCode.Text & "'") Then
-                            db.ExecuteSQLQuery("UPDATE SSINFOTERMBR SET BRANCH_NM ='" & txtBranch.Text & "',BRANCH_CD = '" & txtBranchCode.Text & "',GROUP_NM = '" & getGroupCode & "',CLSTR_CD = '" & getClusterCode & "' where BRANCH_CD = '" & txtBranchCode.Text & "' ")
-                        Else
-                            MsgBox("Branch code doesn't exist.")
-                        End If
-                    End If
+                        btnSave.Text = "Save"
+                        disable()
+                        clear()
 
-            End Select
-           
+                        loadBranches()
+                    Else
+                        MsgBox("Failed to save changes.")
+                    End If
+                End If
+
+            End If
+
+            'Select Case x
+            '    Case 1
+            '        Dim getClusterCode As String = db.putSingleValue("select CLSTR_CD from SSINFOTERMCLSTR where CLSTR_NM = '" & cbCluster.Text & "'")
+            '        Dim getGroupCode As String = db.putSingleValue("select GROUP_CD from SSINFOTERMGROUP where GROUP_NM = '" & cbGroup.Text & "'")
+            '        If cbGroup.Text = "" Then
+            '            MsgBox("Group is empty.", MsgBoxStyle.Exclamation)
+            '        ElseIf cbCluster.Text = "" Then
+            '            MsgBox("Division is empty.", MsgBoxStyle.Exclamation)
+            '        ElseIf txtBranch.Text = "" Then
+            '            MsgBox("Branch is empty.", MsgBoxStyle.Exclamation)
+            '        ElseIf txtBranchCode.Text = "" Then
+            '            MsgBox("Branch code is empty.", MsgBoxStyle.Exclamation)
+            '        Else
+            '            Dim resp = db.doNonQuery("INSERT INTO SSINFOTERMBR (BRANCH_CD,BRANCH_NM,CLSTR_CD,GROUP_CD) values ('" & txtBranchCode.Text & "','" & txtBranch.Text & "','" & getClusterCode & "','" & getGroupCode & "')")
+            '            'db.ExecuteSQLQuery("INSERT INTO SSINFOTERMBR (BRANCH_CD,BRANCH_NM,CLSTR_CD,GROUP_CD) values ('" & txtBranchCode.Text & "','" & txtBranch.Text & "','" & getClusterCode & "','" & getGroupCode & "')")
+            '            MsgBox("Successfully added.", MsgBoxStyle.Information)
+            '            y = 0
+            '            btnCancel.Text = "Close"
+            '            btnSave.Text = "Save"
+            '            disable()
+            '            clear()
+            '        End If
+            '    Case 2
+            '        Dim getClusterCode As String = db.putSingleValue("select CLSTR_CD from SSINFOTERMCLSTR where CLSTR_NM = '" & cbCluster.Text & "'")
+            '        Dim getGroupCode As String = db.putSingleValue("select GROUP_CD from SSINFOTERMGROUP where GROUP_NM = '" & cbGroup.Text & "'")
+            '        If cbGroup.Text = "" Then
+            '            MsgBox("Group is empty.", MsgBoxStyle.Exclamation)
+            '        ElseIf cbCluster.Text = "" Then
+            '            MsgBox("Division is empty.", MsgBoxStyle.Exclamation)
+            '        ElseIf txtBranch.Text = "" Then
+            '            MsgBox("Branch is empty.", MsgBoxStyle.Exclamation)
+            '        ElseIf txtBranchCode.Text = "" Then
+            '            MsgBox("Branch code is empty.", MsgBoxStyle.Exclamation)
+            '        Else
+            '            If db.checkExistence("Select BRANCH_CD FROM SSINFOTERMBR WHERE BRANCH_CD = '" & txtBranchCode.Text & "'") Then
+            '                'db.ExecuteSQLQuery("UPDATE SSINFOTERMBR SET BRANCH_NM ='" & txtBranch.Text & "',BRANCH_CD = '" & txtBranchCode.Text & "',GROUP_CD = '" & getGroupCode & "',CLSTR_CD = '" & getClusterCode & "' where BRANCH_CD = '" & txtBranchCode.Text & "' ")
+            '                Dim resp = db.doNonQuery("UPDATE SSINFOTERMBR SET BRANCH_NM ='" & txtBranch.Text & "',BRANCH_CD = '" & txtBranchCode.Text & "',GROUP_CD = '" & getGroupCode & "',CLSTR_CD = '" & getClusterCode & "' where BRANCH_CD = '" & txtBranchCode.Text & "' ")
+            '                If resp Then
+            '                    MsgBox("Successfully saved.", MsgBoxStyle.Information)
+            '                    y = 0
+            '                    btnCancel.Text = "Close"
+            '                    btnSave.Text = "Save"
+            '                    disable()
+            '                    clear()
+            '                Else
+            '                    MsgBox("Failed to save changes.")
+            '                End If
+            '            Else
+            '                MsgBox("Branch code doesn't exist.")
+            '            End If
+            '        End If
+
+            'End Select
+
         Catch ex As Exception
             MsgBox(ex.ToString)
         End Try
@@ -112,6 +177,8 @@ Public Class _frmAddBranch
         x = 1
         btnCancel.Text = "Cancel"
         btnSave.Text = "Save"
+        btnEdit.Visible = False
+        btnadd.Visible = False
         enable()
     End Sub
 
@@ -120,6 +187,8 @@ Public Class _frmAddBranch
         x = 2
         btnCancel.Text = "Cancel"
         btnSave.Text = "Update"
+        btnEdit.Visible = False
+        btnadd.Visible = False
         enable()
     End Sub
 

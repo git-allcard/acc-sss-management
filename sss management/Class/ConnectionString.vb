@@ -378,6 +378,7 @@ Public Class ConnectionString
             cb.DataSource = dt
             cb.DisplayMember = dt.Columns(0).ColumnName
             cb.ValueMember = dt.Columns(0).ColumnName
+
         Catch ex As Exception
             Dim errorLogs As String = ex.ToString.Trim
             'errorLogs = errorLogs.Trim

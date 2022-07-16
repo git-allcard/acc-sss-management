@@ -12,6 +12,9 @@ Public Class _frmKiosk
     Dim Status As String
     Dim isVpn As String
     Dim saveUpdate As Integer
+
+    Private selectedBranch As String = ""
+
 #Region "Miscellaneous"
     Public Sub hideall()
         lanvip.Visible = False
@@ -134,6 +137,7 @@ Public Class _frmKiosk
         cbstart.Enabled = False
         cbstart1.Enabled = False
         isVpn = Nothing
+        selectedBranch = ""
     End Sub
     Public Sub LoadData()
         db.FillDataGridView("Select KIOSK_ID as 'Host ID',SERIALNUM as 'Serial No.',KIOSK_NM as 'Host Name',BRANCH_IP as 'IP Address',SSINFOTERMGROUP.GROUP_NM as 'Group',SSINFOTERMCLSTR.CLSTR_NM as 'Division',BRANCH_NM as 'Branch',ENCODE_DT as 'Date created',case when TAG = 1 then 'ACTIVE' when TAG = 0 then 'INACTIVE' else 'DEACTIVE' end as [Status] from SSINFOTERMKIOSK inner join SSINFOTERMBR on SSINFOTERMKIOSK.BRANCH_CD = SSINFOTERMBR.BRANCH_CD inner join SSINFOTERMGROUP on SSINFOTERMKIOSK.DIVSN = SSINFOTERMGROUP.GROUP_CD inner join SSINFOTERMCLSTR on SSINFOTERMKIOSK.CLSTR = SSINFOTERMCLSTR.CLSTR_CD ORDER BY KIOSK_ID", dgvKiosk)
@@ -149,8 +153,12 @@ Public Class _frmKiosk
             txtStats.Text = Nothing
             rbLAN.Checked = False
             rbVPN.Checked = False
+            selectedBranch = ""
         End If
     End Sub
+
+
+
     Public Sub fillFields()
         Try
 
@@ -159,6 +167,8 @@ Public Class _frmKiosk
             Dim getGroup As String = db.putSingleValue("Select SSINFOTERMGROUP.GROUP_NM from SSINFOTERMKIOSK inner join SSINFOTERMGROUP on SSINFOTERMKIOSK.DIVSN = SSINFOTERMGROUP.GROUP_CD where KIOSK_ID = '" & useridExist & "'")
             Dim getCluster As String = db.putSingleValue("select SSINFOTERMCLSTR.CLSTR_NM from SSINFOTERMKIOSK inner join SSINFOTERMCLSTR on SSINFOTERMKIOSK.CLSTR = SSINFOTERMCLSTR.CLSTR_CD where KIOSK_ID = '" & useridExist & "'")
             Dim getBranch As String = db.putSingleValue("select BRANCH_NM from SSINFOTERMKIOSK inner join SSINFOTERMBR on SSINFOTERMKIOSK.BRANCH_CD = SSINFOTERMBR.BRANCH_CD where KIOSK_ID = '" & useridExist & "'")
+
+            selectedBranch = getBranch
 
             txtmgmtID.Text = db.putSingleValue("select KIOSK_ID from SSINFOTERMKIOSK where KIOSK_ID = '" & useridExist & "'")
             txtKName.Text = db.putSingleValue("select KIOSK_NM from SSINFOTERMKIOSK where KIOSK_ID = '" & useridExist & "'")
@@ -204,9 +214,9 @@ Public Class _frmKiosk
     Private Sub _frmKiosk_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         My.Settings.Module_Tag = 5
         getAutoGenID = am.getAutoID()
-        db.fillComboBox(db.ExecuteSQLQuery("select GROUP_NM from SSINFOTERMGROUP"), cbGroup)
-        db.fillComboBox(db.ExecuteSQLQuery("select CLSTR_NM from SSINFOTERMCLSTR"), cbCluster)
-        db.fillComboBox(db.ExecuteSQLQuery("select BRANCH_NM from SSINFOTERMBR ORDER BY BRANCH_NM"), cbBranch)
+        db.fillComboBox(db.ExecuteSQLQuery("select GROUP_NM from SSINFOTERMGROUP ORDER BY GROUP_NM"), cbGroup)
+        'db.fillComboBox(db.ExecuteSQLQuery("select CLSTR_NM from SSINFOTERMCLSTR ORDER BY CLSTR_NM"), cbCluster)
+        'db.fillComboBox(db.ExecuteSQLQuery("select BRANCH_NM from SSINFOTERMBR ORDER BY BRANCH_NM"), cbBranch)
         LoadData()
     End Sub
 
@@ -341,7 +351,7 @@ Public Class _frmKiosk
                         Dim getCluster As String = db.putSingleValue("select CLSTR_CD from SSINFOTERMCLSTR where CLSTR_NM = '" & cbCluster.Text & "'")
                         Dim getGroup As String = db.putSingleValue("select GROUP_CD from SSINFOTERMGROUP where GROUP_NM = '" & cbGroup.Text & "'")
                         Dim IdleTime As String = db.putSingleValue("select DISTINCT IDLE_TIME FROM SSINFOTERMKIOSK")
-                        db.ExecuteSQLQuery("insert into SSINFOTERMKIOSK (KIOSK_ID,BRANCH_CD,KIOSK_NM,BRANCH_IP,IDLE_TIME,STATUS,ENCODE_DT,CLSTR,DIVSN,TAG,OP_START,OP_END,SERIALNUM,isVPN) values('" & txtmgmtID.Text & "','" & getBranch & "','" & txtKName.Text & "','" & txtIpAdd.Text & _
+                        db.ExecuteSQLQuery("insert into SSINFOTERMKIOSK (KIOSK_ID,BRANCH_CD,KIOSK_NM,BRANCH_IP,IDLE_TIME,STATUS,ENCODE_DT,CLSTR,DIVSN,TAG,OP_START,OP_END,SERIALNUM,isVPN) values('" & txtmgmtID.Text & "','" & getBranch & "','" & txtKName.Text & "','" & txtIpAdd.Text &
                       "','" & IdleTime & "','0','" & todayDate & "','" & getCluster & "', '" & getGroup & "','" & Status & "','" & OPSTART & "','" & OPEND & "','" & txtKSerNum.Text & "','" & isVpn & "')")
                         'db.ExecuteSQLQuery(db.sql)
 
@@ -353,6 +363,8 @@ Public Class _frmKiosk
                         save()
                         txtmgmtID.ReadOnly = True
                         dgvKiosk.Enabled = True
+
+                        selectedBranch = ""
                     End If
                 End If
                 'Else
@@ -434,6 +446,10 @@ Public Class _frmKiosk
                     lanvip.Visible = False
                 End If
                 If a = 9 Then
+                    If cbBranch.Text <> selectedBranch Then
+                        MsgBox("Please re-check selected branch vs original branch")
+                        Return
+                    End If
 
                     If db.checkExistence("select KIOSK_ID from SSINFOTERMKIOSK where KIOSK_ID = '" & txtmgmtID.Text & "'") = True Then
                         If MsgBox("Click OK to update kiosk information.", MsgBoxStyle.OkCancel) = MsgBoxResult.Ok Then
@@ -457,13 +473,15 @@ Public Class _frmKiosk
                             Dim getClusterCD As String = db.putSingleValue("select CLSTR_CD from SSINFOTERMCLSTR where CLSTR_NM = '" & cbCluster.Text & "'")
                             Dim getGroupCD As String = db.putSingleValue("select GROUP_CD from SSINFOTERMGROUP where GROUP_NM = '" & cbGroup.Text & "'")
 
-                            db.ExecuteSQLQuery("Update SSINFOTERMKIOSK set KIOSK_NM = '" & txtKName.Text & "', BRANCH_CD = '" & getBranchCD & _
+                            db.ExecuteSQLQuery("Update SSINFOTERMKIOSK set KIOSK_NM = '" & txtKName.Text & "', BRANCH_CD = '" & getBranchCD &
                                          "', BRANCH_IP = '" & txtIpAdd.Text & "', CLSTR = '" & getClusterCD & "', DIVSN = '" & getGroupCD & "', OP_START = '" & OPSTART & "', OP_END = '" & OPEND & "',SERIALNUM = '" & txtKSerNum.Text & "',TAG = '" & Status & "',isVPN = '" & isVpn & "'  where KIOSK_ID = '" & txtmgmtID.Text & "' ")
                             MsgBox("Successfully updated.", MsgBoxStyle.Information, "Registration")
                             LoadData()
                             update1()
                             dgvKiosk.Enabled = True
                             txtmgmtID.ReadOnly = False
+
+                            selectedBranch = ""
                         End If
                     Else
                         MsgBox("Terminal doesn't exist.")
@@ -542,32 +560,70 @@ Public Class _frmKiosk
         txtmgmtID.ReadOnly = False
     End Sub
 
-    Private Sub cbCluster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbCluster.Click
+    'Private Sub cbCluster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbCluster.Click
+    '    If cbGroup.Text <> "" Then
+    '        db.fillComboBox(db.ExecuteSQLQuery("SELECT CLSTR_NM FROM SSINFOTERMCLSTR INNER JOIN SSINFOTERMGROUP ON SSINFOTERMGROUP.GROUP_CD = SSINFOTERMCLSTR.GROUP_CD where SSINFOTERMGROUP.GROUP_NM = '" & cbGroup.Text & "'"), cbCluster)
+    '    Else
+    '        db.fillComboBox(db.ExecuteSQLQuery("Select CLSTR_NM FROM SSINFOTERMCLSTR"), cbCluster)
+    '    End If
+    'End Sub
+
+    Private Sub PopulateCluster()
+        Dim dtObj As DataTable = Nothing
+
         If cbGroup.Text <> "" Then
-            db.fillComboBox(db.ExecuteSQLQuery("SELECT CLSTR_NM FROM SSINFOTERMCLSTR INNER JOIN SSINFOTERMGROUP ON SSINFOTERMGROUP.GROUP_CD = SSINFOTERMCLSTR.GROUP_CD where SSINFOTERMGROUP.GROUP_NM = '" & cbGroup.Text & "'"), cbCluster)
+            dtObj = db.ExecuteSQLQuery("SELECT CLSTR_NM FROM SSINFOTERMCLSTR INNER JOIN SSINFOTERMGROUP ON SSINFOTERMGROUP.GROUP_CD = SSINFOTERMCLSTR.GROUP_CD where SSINFOTERMGROUP.GROUP_NM = '" & cbGroup.Text & "' ORDER BY CLSTR_NM")
         Else
-            db.fillComboBox(db.ExecuteSQLQuery("Select CLSTR_NM FROM SSINFOTERMCLSTR"), cbCluster)
+            dtObj = db.ExecuteSQLQuery("Select CLSTR_NM FROM SSINFOTERMCLSTR ORDER BY CLSTR_NM")
         End If
+
+        db.fillComboBox(dtObj, cbCluster)
     End Sub
 
-    Private Sub cbBranch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbBranch.Click
+    Private Sub PopulateBranch()
+        Dim dtObj As DataTable = Nothing
+
         If cbCluster.Text <> "" Then
-            db.fillComboBox(db.ExecuteSQLQuery("SELECT BRANCH_NM FROM SSINFOTERMBR INNER JOIN SSINFOTERMCLSTR ON SSINFOTERMCLSTR.CLSTR_CD = SSINFOTERMBR.CLSTR_CD where SSINFOTERMCLSTR.CLSTR_NM = '" & cbCluster.Text & "'"), cbBranch)
-        ElseIf cbGroup.Text <> "" Then
-            db.fillComboBox(db.ExecuteSQLQuery("SELECT BRANCH_NM FROM SSINFOTERMBR INNER JOIN SSINFOTERMGROUP ON SSINFOTERMGROUP.GROUP_CD = SSINFOTERMBR.GROUP_CD where SSINFOTERMGROUP.GROUP_NM = '" & cbGroup.Text & "'"), cbBranch)
+            dtObj = db.ExecuteSQLQuery("SELECT BRANCH_NM FROM SSINFOTERMBR INNER JOIN SSINFOTERMCLSTR ON SSINFOTERMCLSTR.CLSTR_CD = SSINFOTERMBR.CLSTR_CD where SSINFOTERMCLSTR.CLSTR_NM = '" & cbCluster.Text & "' ORDER BY BRANCH_NM")
         Else
-            db.fillComboBox(db.ExecuteSQLQuery("SELECT BRANCH_NM FROM SSINFOTERMBR ORDER BY BRANCH_NM"), cbBranch)
+            dtObj = db.ExecuteSQLQuery("SELECT BRANCH_NM FROM SSINFOTERMBR ORDER BY BRANCH_NM")
         End If
+
+        db.fillComboBox(dtObj, cbBranch)
     End Sub
 
     Private Sub cbGroup_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbGroup.SelectedIndexChanged
-        db.fillComboBox(db.ExecuteSQLQuery("SELECT CLSTR_NM FROM SSINFOTERMCLSTR INNER JOIN SSINFOTERMGROUP ON SSINFOTERMGROUP.GROUP_CD = SSINFOTERMCLSTR.GROUP_CD where SSINFOTERMGROUP.GROUP_NM = '" & cbGroup.Text & "'"), cbCluster)
-        cbBranch.Text = Nothing
+        'Dim dtObj As DataTable = db.ExecuteSQLQuery("SELECT CLSTR_NM FROM SSINFOTERMCLSTR INNER JOIN SSINFOTERMGROUP ON SSINFOTERMGROUP.GROUP_CD = SSINFOTERMCLSTR.GROUP_CD where SSINFOTERMGROUP.GROUP_NM = '" & cbGroup.Text & "' ORDER BY CLSTR_NM")
+        'PopulateToCbo(dtObj, cbCluster)
+        ''db.fillComboBox(dtObj.DefaultView.ToTable(), cbCluster)
+        'cbBranch.Text = Nothing
+
+        Try
+            PopulateCluster()
+        Catch ex As Exception
+        End Try
     End Sub
 
     Private Sub cbCluster_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbCluster.SelectedIndexChanged
-        db.fillComboBox(db.ExecuteSQLQuery("SELECT BRANCH_NM FROM SSINFOTERMBR INNER JOIN SSINFOTERMCLSTR ON SSINFOTERMCLSTR.CLSTR_CD = SSINFOTERMBR.CLSTR_CD where SSINFOTERMCLSTR.CLSTR_NM = '" & cbCluster.Text & "'"), cbBranch)
+        'Dim dtObj As DataTable = db.ExecuteSQLQuery("SELECT BRANCH_NM FROM SSINFOTERMBR INNER JOIN SSINFOTERMCLSTR ON SSINFOTERMCLSTR.CLSTR_CD = SSINFOTERMBR.CLSTR_CD where SSINFOTERMCLSTR.CLSTR_NM = '" & cbCluster.Text & "' ORDER BY BRANCH_NM")
+        'PopulateToCbo(dtObj, cbBranch)
+        ''db.fillComboBox(dtObj.DefaultView.ToTable(), cbBranch)
+
+        Try
+            PopulateBranch()
+        Catch ex As Exception
+        End Try
     End Sub
+
+    Private Sub PopulateToCbo(ByVal dt As DataTable, ByVal cbo As ComboBox)
+        cbo.Items.Clear()
+        cbo.Items.Add("-Select-")
+        For Each rw As DataRow In dt.Rows
+            cbo.Items.Add(rw(0).ToString())
+        Next
+        cbo.SelectedIndex = 0
+    End Sub
+
     Private Sub rbLAN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbLAN.CheckedChanged
         isVpn = "false"
     End Sub
@@ -604,12 +660,12 @@ Public Class _frmKiosk
                 filepath = filepath & "\"
 
                 Dim CrExportOptions As ExportOptions
-                Dim CrDiskFileDestinationOptions As New  _
+                Dim CrDiskFileDestinationOptions As New _
        DiskFileDestinationOptions()
                 Dim CrFormatTypeOptions As New ExcelFormatOptions
                 CrFormatTypeOptions.ExcelUseConstantColumnWidth = False
                 CrFormatTypeOptions.ShowGridLines = True
-                CrDiskFileDestinationOptions.DiskFileName = _
+                CrDiskFileDestinationOptions.DiskFileName =
                                             filepath & getFileName & " " & getdate & " " & gettime & ".xls"
                 CrExportOptions = cryRpt.ExportOptions
                 With CrExportOptions
@@ -638,4 +694,5 @@ Public Class _frmKiosk
             End If
         End If
     End Sub
+
 End Class

@@ -88,13 +88,12 @@ Partial Class _frmKiosk
         '
         Me.txtIpAdd.Border.Class = "TextBoxBorder"
         Me.txtIpAdd.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square
-        'Me.txtIpAdd.DisabledBackColor = System.Drawing.Color.White
         Me.txtIpAdd.Enabled = False
         Me.txtIpAdd.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtIpAdd.ForeColor = System.Drawing.Color.Black
         Me.txtIpAdd.Location = New System.Drawing.Point(119, 81)
         Me.txtIpAdd.Name = "txtIpAdd"
-        Me.txtIpAdd.Size = New System.Drawing.Size(310, 29)
+        Me.txtIpAdd.Size = New System.Drawing.Size(310, 35)
         Me.txtIpAdd.TabIndex = 4
         '
         'ksnum
@@ -141,13 +140,12 @@ Partial Class _frmKiosk
         '
         Me.txtKSerNum.Border.Class = "TextBoxBorder"
         Me.txtKSerNum.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square
-        'Me.txtKSerNum.DisabledBackColor = System.Drawing.Color.White
         Me.txtKSerNum.Enabled = False
         Me.txtKSerNum.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtKSerNum.ForeColor = System.Drawing.Color.Black
         Me.txtKSerNum.Location = New System.Drawing.Point(119, 137)
         Me.txtKSerNum.Name = "txtKSerNum"
-        Me.txtKSerNum.Size = New System.Drawing.Size(310, 29)
+        Me.txtKSerNum.Size = New System.Drawing.Size(310, 35)
         Me.txtKSerNum.TabIndex = 23
         '
         'txtKName
@@ -158,13 +156,12 @@ Partial Class _frmKiosk
         '
         Me.txtKName.Border.Class = "TextBoxBorder"
         Me.txtKName.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square
-        'Me.txtKName.DisabledBackColor = System.Drawing.Color.White
         Me.txtKName.Enabled = False
         Me.txtKName.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtKName.ForeColor = System.Drawing.Color.Black
         Me.txtKName.Location = New System.Drawing.Point(119, 109)
         Me.txtKName.Name = "txtKName"
-        Me.txtKName.Size = New System.Drawing.Size(310, 29)
+        Me.txtKName.Size = New System.Drawing.Size(310, 35)
         Me.txtKName.TabIndex = 21
         '
         'txtmgmtID
@@ -175,14 +172,13 @@ Partial Class _frmKiosk
         '
         Me.txtmgmtID.Border.Class = "TextBoxBorder"
         Me.txtmgmtID.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square
-        'Me.txtmgmtID.DisabledBackColor = System.Drawing.Color.White
         Me.txtmgmtID.Enabled = False
         Me.txtmgmtID.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtmgmtID.ForeColor = System.Drawing.Color.Black
         Me.txtmgmtID.Location = New System.Drawing.Point(119, 53)
         Me.txtmgmtID.MaxLength = 4
         Me.txtmgmtID.Name = "txtmgmtID"
-        Me.txtmgmtID.Size = New System.Drawing.Size(134, 29)
+        Me.txtmgmtID.Size = New System.Drawing.Size(134, 35)
         Me.txtmgmtID.TabIndex = 20
         '
         'Label4
@@ -352,7 +348,6 @@ Partial Class _frmKiosk
         Me.GroupPanel1.Controls.Add(Me.Label15)
         Me.GroupPanel1.Controls.Add(Me.cbFields)
         Me.GroupPanel1.Controls.Add(Me.txtSearch)
-        'Me.GroupPanel1.DisabledBackColor = System.Drawing.Color.Empty
         Me.GroupPanel1.Location = New System.Drawing.Point(1, 3)
         Me.GroupPanel1.Name = "GroupPanel1"
         Me.GroupPanel1.Size = New System.Drawing.Size(1019, 59)
@@ -371,6 +366,7 @@ Partial Class _frmKiosk
         Me.GroupPanel1.Style.BorderRightWidth = 1
         Me.GroupPanel1.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid
         Me.GroupPanel1.Style.BorderTopWidth = 1
+        Me.GroupPanel1.Style.Class = ""
         Me.GroupPanel1.Style.CornerDiameter = 4
         Me.GroupPanel1.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded
         Me.GroupPanel1.Style.TextAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Center
@@ -379,10 +375,12 @@ Partial Class _frmKiosk
         '
         '
         '
+        Me.GroupPanel1.StyleMouseDown.Class = ""
         Me.GroupPanel1.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square
         '
         '
         '
+        Me.GroupPanel1.StyleMouseOver.Class = ""
         Me.GroupPanel1.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square
         Me.GroupPanel1.TabIndex = 127
         Me.GroupPanel1.Text = "Quick Search"
